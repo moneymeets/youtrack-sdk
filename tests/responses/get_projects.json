@@ -1,0 +1,14 @@
+[
+  {
+    "shortName": "DEMO",
+    "name": "Demo project",
+    "id": "0-0",
+    "$type": "Project"
+  },
+  {
+    "shortName": "HD",
+    "name": "Help Desk",
+    "id": "0-5",
+    "$type": "Project"
+  }
+]
