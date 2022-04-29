@@ -1,0 +1,17 @@
+[
+  {
+    "name": "productivity",
+    "id": "6-0",
+    "$type": "IssueTag"
+  },
+  {
+    "name": "tip",
+    "id": "6-1",
+    "$type": "IssueTag"
+  },
+  {
+    "name": "Star",
+    "id": "6-5",
+    "$type": "IssueTag"
+  }
+]

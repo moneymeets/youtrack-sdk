@@ -1,0 +1,21 @@
+name: CI
+on: [ push ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python + Poetry
+        uses: moneymeets/action-setup-python-poetry@master
+
+      - name: Run linter
+        run: |
+          find . -name '*.py' | xargs poetry run add-trailing-comma --py36-plus
+          poetry run flake8
+
+      - name: Run tests
+        run: poetry run pytest --cov --cov-fail-under=90
