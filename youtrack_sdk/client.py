@@ -60,7 +60,7 @@ class Client:
             url=self._build_url(path=path, fields=fields, offset=offset, count=count),
             data=obj_to_json(data),
             files=files,
-            headers={"Content-Type": "application/json"},
+            headers=data and {"Content-Type": "application/json"},
         )
 
         if response.status_code == 404:
