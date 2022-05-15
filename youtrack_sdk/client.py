@@ -58,7 +58,7 @@ class Client:
         response = self._session.request(
             method=method,
             url=self._build_url(path=path, fields=fields, offset=offset, count=count),
-            data=obj_to_json(data),
+            data=data and obj_to_json(data),
             files=files,
             headers=data and {"Content-Type": "application/json"},
         )
