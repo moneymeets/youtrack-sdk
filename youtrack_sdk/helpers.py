@@ -2,7 +2,7 @@ import json
 from copy import deepcopy
 from datetime import date, datetime, time, timezone
 from itertools import starmap
-from typing import Any, Optional, Type, Union
+from typing import Any, Optional, Type, Union, get_args
 
 from pydantic import BaseModel
 
@@ -46,21 +46,24 @@ def model_to_field_names(model: Type[BaseModel] | Union[Type[BaseModel]]) -> Opt
         id,name,value(id,period(id,minutes,presentation),description)
     """
 
-    model_schema = model.schema(ref_template="{model}")
-    definitions = model_schema.get("definitions", {})
+    def model_to_fields(m: Type[BaseModel]) -> dict:
+        model_schema = m.schema(ref_template="{model}")
+        definitions = model_schema.get("definitions", {})
 
-    def schema_to_fields(schema: dict) -> dict:
-        def type_to_fields(field_type: dict) -> dict:
-            if "$ref" in field_type:
-                return schema_to_fields(definitions[field_type["$ref"]])
-            elif field_type.get("type") == "array":
-                return type_to_fields(field_type["items"])
-            elif sub_types := field_type.get("anyOf", field_type.get("allOf", field_type.get("oneOf"))):
-                return deep_update({}, *map(type_to_fields, sub_types))
-            else:
-                return {}
+        def schema_to_fields(schema: dict) -> dict:
+            def type_to_fields(field_type: dict) -> dict:
+                if "$ref" in field_type:
+                    return schema_to_fields(definitions[field_type["$ref"]])
+                elif field_type.get("type") == "array":
+                    return type_to_fields(field_type["items"])
+                elif sub_types := field_type.get("anyOf", field_type.get("allOf", field_type.get("oneOf"))):
+                    return deep_update({}, *map(type_to_fields, sub_types))
+                else:
+                    return {}
 
-        return {name: type_to_fields(value) for name, value in schema["properties"].items()}
+            return {name: type_to_fields(value) for name, value in schema["properties"].items()}
+
+        return schema_to_fields(model_schema)
 
     def fields_to_csv(fields: dict) -> str:
         return ",".join(
@@ -68,7 +71,12 @@ def model_to_field_names(model: Type[BaseModel] | Union[Type[BaseModel]]) -> Opt
             for field_name, value in fields.items()
         )
 
-    return fields_to_csv(schema_to_fields(model_schema)) or None
+    # `get_args` returns a sequence of the types included in the union type
+    # or an empty sequence if the `model` is a base type
+    models = get_args(model) or (model,)
+    fields_dict = deep_update({}, *map(model_to_fields, models))
+
+    return fields_to_csv(fields_dict) or None
 
 
 def obj_to_dict(obj: Optional[BaseModel]) -> Optional[dict]:

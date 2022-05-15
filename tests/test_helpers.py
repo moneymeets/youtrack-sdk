@@ -1,4 +1,4 @@
-from typing import Literal, Optional, Sequence
+from typing import Literal, Optional, Sequence, Union
 from unittest import TestCase
 
 from pydantic import Field
@@ -43,4 +43,14 @@ class TestModelToFieldNames(TestCase):
             "items($type,value($type,id,shortName),id,shortName),"
             "entry($type,value($type,id,shortName),id,shortName)",
             model_to_field_names(NestedUnionModel),
+        )
+
+    def test_union_type(self):
+        self.assertEqual(
+            "$type,id,shortName,value($type,id,shortName)",
+            model_to_field_names(SimpleModel | NestedModel),
+        )
+        self.assertEqual(
+            "$type,id,shortName,value($type,id,shortName)",
+            model_to_field_names(Union[SimpleModel | NestedModel]),
         )
