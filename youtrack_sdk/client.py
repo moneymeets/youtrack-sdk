@@ -27,9 +27,6 @@ class Client:
         offset: Optional[int] = None,
         count: Optional[int] = None,
     ) -> str:
-        if not path.startswith("/"):
-            path = "/" + path
-
         query = "&".join(
             tuple(
                 f"{key}={value}"
