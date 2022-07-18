@@ -27,9 +27,6 @@ class Client:
         offset: Optional[int] = None,
         count: Optional[int] = None,
     ) -> str:
-        if not path.startswith("/"):
-            path = "/" + path
-
         query = "&".join(
             tuple(
                 f"{key}={value}"
@@ -58,9 +55,9 @@ class Client:
         response = self._session.request(
             method=method,
             url=self._build_url(path=path, fields=fields, offset=offset, count=count),
-            data=obj_to_json(data),
+            data=data and obj_to_json(data),
             files=files,
-            headers={"Content-Type": "application/json"},
+            headers=data and {"Content-Type": "application/json"},
         )
 
         if response.status_code == 404:
@@ -111,7 +108,7 @@ class Client:
         offset: Optional[int] = None,
         count: Optional[int] = None,
         data: Optional[BaseModel] = None,
-        files: Optional[dict] = None,
+        files: Optional[dict[str, IO]] = None,
     ) -> Optional[dict]:
         return self._send_request(
             method="POST",
@@ -172,7 +169,7 @@ class Client:
             ),
         )
 
-    def update_issue_custom_field(self, *, issue_id: str, field: IssueCustomFieldType):
+    def update_issue_custom_field(self, *, issue_id: str, field: IssueCustomFieldType) -> IssueCustomFieldType:
         """Update specific custom field in the issue.
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-customFields.html#update-IssueCustomField-method
@@ -257,7 +254,7 @@ class Client:
         issue_id: str,
         comment_id: str,
         files: dict[str, IO],
-    ):
+    ) -> Sequence[IssueAttachment]:
         return parse_obj_as(
             tuple[IssueAttachment, ...],
             self._post(
