@@ -26,7 +26,6 @@ result = client.create_issue(
         project=Project(id="0-0"),
         summary="Created from YouTrack SDK",
         description="Description **text**.",
-        uses_markdown=True,
         tags=[
             IssueTag(id="6-0"),
         ],
