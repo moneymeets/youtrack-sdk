@@ -202,7 +202,6 @@ class Issue(BaseModel):
     summary: Optional[str]
     description: Optional[str]
     wikified_description: Optional[str] = Field(alias="wikifiedDescription")
-    uses_markdown: Optional[bool] = Field(alias="usesMarkdown")
     tags: Optional[Sequence[IssueTag]]
     custom_fields: Optional[Sequence[IssueCustomFieldType]] = Field(alias="customFields")
 
@@ -222,7 +221,6 @@ class IssueComment(BaseModel):
     type: Literal["IssueComment"] = Field(alias="$type", default="IssueComment")
     id: Optional[str]
     text: Optional[str]
-    uses_markdown: Optional[bool] = Field(alias="usesMarkdown")
     text_preview: Optional[str] = Field(alias="textPreview")
     created: Optional[datetime]
     updated: Optional[datetime]

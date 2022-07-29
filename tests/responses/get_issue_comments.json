@@ -11,7 +11,6 @@
     "created": 1639480668000,
     "text": "*Hello*, world!",
     "updated": null,
-    "usesMarkdown": true,
     "attachments": [],
     "textPreview": "<strong>Hello</strong>, world!",
     "id": "4-296",
@@ -29,7 +28,6 @@
     "created": 1639572700000,
     "text": "Sample _comment_",
     "updated": 1639573700000,
-    "usesMarkdown": false,
     "attachments": [],
     "textPreview": "Sample <em>comment</em>",
     "id": "4-443",
@@ -47,7 +45,6 @@
     "created": 1640104893000,
     "text": "Comment with attachments",
     "updated": null,
-    "usesMarkdown": true,
     "attachments": [
       {
         "created": 1640104893000,
