@@ -218,6 +218,13 @@ class Client:
             ),
         )
 
+    def delete_issue_comment(self, *, issue_id: str, comment_id: str):
+        """Delete a specific issue comment.
+
+        https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-comments.html#delete-IssueComment-method
+        """
+        self._delete(path=f"/issues/{issue_id}/comments/{comment_id}")
+
     def get_issue_attachments(self, *, issue_id: str, offset: int = 0, count: int = -1) -> Sequence[IssueAttachment]:
         """Get a list of all attachments of the specific issue.
 
