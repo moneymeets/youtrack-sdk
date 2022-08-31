@@ -218,6 +218,26 @@ class Client:
             ),
         )
 
+    def update_issue_comment(self, *, issue_id: str, comment: IssueComment) -> IssueComment:
+        """Update an existing comment of the specific issue.
+
+        https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-comments.html#update-IssueComment-method
+        """
+        return IssueComment.parse_obj(
+            self._post(
+                path=f"/issues/{issue_id}/comments/{comment.id}",
+                fields=model_to_field_names(IssueComment),
+                data=comment,
+            ),
+        )
+
+    def hide_issue_comment(self, *, issue_id: str, comment_id: str):
+        """Hide a specific issue comment.
+
+        https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-comments.html#update-IssueComment-method
+        """
+        self.update_issue_comment(issue_id=issue_id, comment=(IssueComment(id=comment_id, deleted=True)))
+
     def delete_issue_comment(self, *, issue_id: str, comment_id: str):
         """Delete a specific issue comment.
 
