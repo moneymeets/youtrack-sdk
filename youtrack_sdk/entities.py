@@ -14,6 +14,7 @@ class BaseModel(PydanticBaseModel):
 class User(BaseModel):
     type: Literal["User", "Me"] = Field(alias="$type", default="User")
     id: Optional[str]
+    name: Optional[str]
     ring_id: Optional[str] = Field(alias="ringId")
     login: Optional[str]
     email: Optional[str]
