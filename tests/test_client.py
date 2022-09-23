@@ -7,19 +7,25 @@ import requests_mock
 
 from youtrack_sdk.client import Client
 from youtrack_sdk.entities import (
+    CustomField,
     DateIssueCustomField,
     EnumBundleElement,
+    EnumProjectCustomField,
+    FieldType,
     Issue,
     IssueAttachment,
     IssueComment,
     IssueTag,
     Project,
     SimpleIssueCustomField,
+    SimpleProjectCustomField,
     SingleEnumIssueCustomField,
     SingleUserIssueCustomField,
     StateBundleElement,
     StateIssueCustomField,
+    StateProjectCustomField,
     User,
+    UserProjectCustomField,
 )
 
 
@@ -90,6 +96,16 @@ class TestClient(TestCase):
                             name="In Progress",
                             type="StateBundleElement",
                         ),
+                        project_custom_field=StateProjectCustomField.construct(
+                            field=CustomField.construct(
+                                type="CustomField",
+                                field_type=FieldType.construct(
+                                    type="FieldType",
+                                    id="state[1]",
+                                ),
+                            ),
+                            type="StateProjectCustomField",
+                        ),
                     ),
                     SingleUserIssueCustomField(
                         id="111-8",
@@ -103,6 +119,13 @@ class TestClient(TestCase):
                             login="worker",
                             email="worker@example.com",
                         ),
+                        project_custom_field=UserProjectCustomField.construct(
+                            field=CustomField.construct(
+                                type="CustomField",
+                                field_type=FieldType.construct(type="FieldType", id="user[1]"),
+                            ),
+                            type="UserProjectCustomField",
+                        ),
                     ),
                     SingleEnumIssueCustomField(
                         id="110-49",
@@ -113,42 +136,93 @@ class TestClient(TestCase):
                             name="Value One",
                             type="EnumBundleElement",
                         ),
+                        project_custom_field=EnumProjectCustomField.construct(
+                            field=CustomField.construct(
+                                type="CustomField",
+                                field_type=FieldType.construct(type="FieldType", id="enum[1]"),
+                            ),
+                            type="EnumProjectCustomField",
+                        ),
                     ),
                     DateIssueCustomField(
                         id="145-34",
                         name="Due Date",
                         type="DateIssueCustomField",
                         value=date(2022, 2, 17),
+                        project_custom_field=SimpleProjectCustomField.construct(
+                            field=CustomField.construct(
+                                type="CustomField",
+                                field_type=FieldType.construct(type="FieldType", id="date"),
+                            ),
+                        ),
                     ),
                     SimpleIssueCustomField(
                         id="145-35",
                         name="Started at",
                         type="SimpleIssueCustomField",
                         value=datetime(2021, 6, 11, 7, 32, 9, tzinfo=timezone.utc),
+                        project_custom_field=SimpleProjectCustomField.construct(
+                            field=CustomField.construct(
+                                type="CustomField",
+                                field_type=FieldType.construct(
+                                    type="FieldType",
+                                    id="date and time",
+                                ),
+                            ),
+                            type="SimpleProjectCustomField",
+                        ),
                     ),
                     SimpleIssueCustomField(
                         id="145-36",
                         name="Multipass",
                         type="SimpleIssueCustomField",
-                        value="100-003-675",
+                        value="1623396729",
+                        project_custom_field=SimpleProjectCustomField.construct(
+                            field=CustomField.construct(
+                                type="CustomField",
+                                field_type=FieldType.construct(type="FieldType", id="string"),
+                            ),
+                            type="SimpleProjectCustomField",
+                        ),
                     ),
-                    SimpleIssueCustomField(
+                    SimpleIssueCustomField.construct(
                         id="145-39",
                         name="Price",
                         type="SimpleIssueCustomField",
                         value=4003,
+                        project_custom_field=SimpleProjectCustomField.construct(
+                            field=CustomField.construct(
+                                type="CustomField",
+                                field_type=FieldType.construct(type="FieldType", id="integer"),
+                            ),
+                            type="SimpleProjectCustomField",
+                        ),
                     ),
                     SimpleIssueCustomField(
                         id="145-37",
                         name="Multiplier",
                         type="SimpleIssueCustomField",
                         value=3.1412,
+                        project_custom_field=SimpleProjectCustomField.construct(
+                            field=CustomField.construct(
+                                type="CustomField",
+                                field_type=FieldType.construct(type="FieldType", id="float"),
+                            ),
+                            type="SimpleProjectCustomField",
+                        ),
                     ),
                     SimpleIssueCustomField(
                         id="145-38",
                         name="Extra",
                         type="SimpleIssueCustomField",
                         value=None,
+                        project_custom_field=SimpleProjectCustomField.construct(
+                            field=CustomField.construct(
+                                type="CustomField",
+                                field_type=FieldType.construct(type="FieldType", id="string"),
+                            ),
+                            type="SimpleProjectCustomField",
+                        ),
                     ),
                 ],
             ),
