@@ -41,7 +41,7 @@ class TestObjToDict(TestCase):
                 "shortName": "Demo",
                 "value": None,
             },
-            obj_to_dict(SimpleModel(short_name="Demo", value=None)),
+            obj_to_dict(SimpleModel.construct(short_name="Demo", value=None)),
         )
 
     def test_nested_model(self):
@@ -55,8 +55,8 @@ class TestObjToDict(TestCase):
                 },
             },
             obj_to_dict(
-                NestedModel(
-                    source=SimpleModel(short_name="Demo", value=None),
+                NestedModel.construct(
+                    source=SimpleModel.construct(short_name="Demo", value=None),
                 ),
             ),
         )
@@ -77,12 +77,12 @@ class TestObjToDict(TestCase):
                 ],
             },
             obj_to_dict(
-                NestedSequenceModel(
+                NestedSequenceModel.construct(
                     items=[
-                        NestedModel(),
-                        NestedModel(
-                            source=SimpleModel(short_name="Source", value=None),
-                            dest=SimpleModel(short_name="Dest", value=5),
+                        NestedModel.construct(),
+                        NestedModel.construct(
+                            source=SimpleModel.construct(short_name="Source", value=None),
+                            dest=SimpleModel.construct(short_name="Dest", value=5),
                         ),
                     ],
                 ),
