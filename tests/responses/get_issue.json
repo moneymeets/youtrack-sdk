@@ -32,6 +32,16 @@
         "id": "98-37",
         "$type": "StateBundleElement"
       },
+      "projectCustomField": {
+        "field": {
+          "fieldType": {
+            "id": "state[1]",
+            "$type": "FieldType"
+          },
+          "$type": "CustomField"
+        },
+        "$type": "StateProjectCustomField"
+      },
       "name": "State",
       "id": "110-50",
       "$type": "StateIssueCustomField"
@@ -45,6 +55,16 @@
         "id": "1-10",
         "$type": "User"
       },
+      "projectCustomField": {
+        "field": {
+          "fieldType": {
+            "id": "user[1]",
+            "$type": "FieldType"
+          },
+          "$type": "CustomField"
+        },
+        "$type": "UserProjectCustomField"
+      },
       "name": "Assignee",
       "id": "111-8",
       "$type": "SingleUserIssueCustomField"
@@ -55,42 +75,112 @@
         "id": "96-38",
         "$type": "EnumBundleElement"
       },
+      "projectCustomField": {
+        "field": {
+          "fieldType": {
+            "id": "enum[1]",
+            "$type": "FieldType"
+          },
+          "$type": "CustomField"
+        },
+        "$type": "EnumProjectCustomField"
+      },
       "name": "Type",
       "id": "110-49",
       "$type": "SingleEnumIssueCustomField"
     },
     {
       "value": 1645110000000,
+      "projectCustomField": {
+        "field": {
+          "fieldType": {
+            "id": "date",
+            "$type": "FieldType"
+          },
+          "$type": "CustomField"
+        },
+        "$type": "SimpleProjectCustomField"
+      },
       "name": "Due Date",
       "id": "145-34",
       "$type": "DateIssueCustomField"
     },
     {
       "value": 1623396729000,
+      "projectCustomField": {
+        "field": {
+          "fieldType": {
+            "id": "date and time",
+            "$type": "FieldType"
+          },
+          "$type": "CustomField"
+        },
+        "$type": "SimpleProjectCustomField"
+      },
       "name": "Started at",
       "id": "145-35",
       "$type": "SimpleIssueCustomField"
     },
     {
-      "value": "100-003-675",
+      "value": "1623396729",
+      "projectCustomField": {
+        "field": {
+          "fieldType": {
+            "id": "string",
+            "$type": "FieldType"
+          },
+          "$type": "CustomField"
+        },
+        "$type": "SimpleProjectCustomField"
+      },
       "name": "Multipass",
       "id": "145-36",
       "$type": "SimpleIssueCustomField"
     },
     {
       "value": 4003,
+      "projectCustomField": {
+        "field": {
+          "fieldType": {
+            "id": "integer",
+            "$type": "FieldType"
+          },
+          "$type": "CustomField"
+        },
+        "$type": "SimpleProjectCustomField"
+      },
       "name": "Price",
       "id": "145-39",
       "$type": "SimpleIssueCustomField"
     },
     {
       "value": 3.1412,
+      "projectCustomField": {
+        "field": {
+          "fieldType": {
+            "id": "float",
+            "$type": "FieldType"
+          },
+          "$type": "CustomField"
+        },
+        "$type": "SimpleProjectCustomField"
+      },
       "name": "Multiplier",
       "id": "145-37",
       "$type": "SimpleIssueCustomField"
     },
     {
       "value": null,
+      "projectCustomField": {
+        "field": {
+          "fieldType": {
+            "id": "string",
+            "$type": "FieldType"
+          },
+          "$type": "CustomField"
+        },
+        "$type": "SimpleProjectCustomField"
+      },
       "name": "Extra",
       "id": "145-38",
       "$type": "SimpleIssueCustomField"

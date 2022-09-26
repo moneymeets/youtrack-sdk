@@ -2,7 +2,9 @@ from datetime import date, datetime
 from typing import Literal, Optional, Sequence
 
 from pydantic import BaseModel as PydanticBaseModel
-from pydantic import Field
+from pydantic import Field, StrictFloat, StrictInt, StrictStr
+
+from .types import DateTime
 
 
 class BaseModel(PydanticBaseModel):
@@ -66,9 +68,83 @@ class UserGroup(BaseModel):
     ring_id: Optional[str] = Field(alias="ringId")
 
 
+class FieldType(BaseModel):
+    type: Literal["FieldType"] = Field(alias="$type", default="FieldType")
+    id: Optional[str]
+
+
+class CustomField(BaseModel):
+    type: Literal["CustomField"] = Field(alias="$type", default="CustomField")
+    field_type: Optional[FieldType] = Field(alias="fieldType")
+
+
+class ProjectCustomField(BaseModel):
+    field: Optional[CustomField]
+
+
+class GroupProjectCustomField(ProjectCustomField):
+    type: Literal["GroupProjectCustomField"] = Field(alias="$type", default="GroupProjectCustomField")
+
+
+class BundleProjectCustomField(ProjectCustomField):
+    type: Literal["BundleProjectCustomField"] = Field(alias="$type", default="BundleProjectCustomField")
+
+
+class BuildProjectCustomField(BundleProjectCustomField):
+    type: Literal["BuildProjectCustomField"] = Field(alias="$type", default="BuildProjectCustomField")
+
+
+class EnumProjectCustomField(BundleProjectCustomField):
+    type: Literal["EnumProjectCustomField"] = Field(alias="$type", default="EnumProjectCustomField")
+
+
+class OwnedProjectCustomField(BundleProjectCustomField):
+    type: Literal["OwnedProjectCustomField"] = Field(alias="$type", default="OwnedProjectCustomField")
+
+
+class StateProjectCustomField(BundleProjectCustomField):
+    type: Literal["StateProjectCustomField"] = Field(alias="$type", default="StateProjectCustomField")
+
+
+class UserProjectCustomField(BundleProjectCustomField):
+    type: Literal["UserProjectCustomField"] = Field(alias="$type", default="UserProjectCustomField")
+
+
+class VersionProjectCustomField(BundleProjectCustomField):
+    type: Literal["VersionProjectCustomField"] = Field(alias="$type", default="VersionProjectCustomField")
+
+
+class SimpleProjectCustomField(ProjectCustomField):
+    type: Literal["SimpleProjectCustomField"] = Field(alias="$type", default="SimpleProjectCustomField")
+
+
+class TextProjectCustomField(SimpleProjectCustomField):
+    type: Literal["TextProjectCustomField"] = Field(alias="$type", default="TextProjectCustomField")
+
+
+class PeriodProjectCustomField(ProjectCustomField):
+    type: Literal["PeriodProjectCustomField"] = Field(alias="$type", default="PeriodProjectCustomField")
+
+
+ProjectCustomFieldType = (
+    GroupProjectCustomField
+    | BundleProjectCustomField
+    | BuildProjectCustomField
+    | EnumProjectCustomField
+    | OwnedProjectCustomField
+    | StateProjectCustomField
+    | UserProjectCustomField
+    | VersionProjectCustomField
+    | SimpleProjectCustomField
+    | TextProjectCustomField
+    | PeriodProjectCustomField
+)
+
+
 class IssueCustomField(BaseModel):
     id: Optional[str]
     name: Optional[str]
+    project_custom_field: Optional[ProjectCustomFieldType] = Field(alias="projectCustomField")
 
 
 class TextIssueCustomField(IssueCustomField):
@@ -78,7 +154,7 @@ class TextIssueCustomField(IssueCustomField):
 
 class SimpleIssueCustomField(IssueCustomField):
     type: Literal["SimpleIssueCustomField"] = Field(alias="$type", default="SimpleIssueCustomField")
-    value: Optional[datetime | str | int | float]
+    value: Optional[DateTime | StrictStr | StrictInt | StrictFloat]
 
 
 class DateIssueCustomField(SimpleIssueCustomField):
