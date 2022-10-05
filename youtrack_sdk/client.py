@@ -4,9 +4,21 @@ from typing import IO, Optional, Sequence
 from pydantic import parse_obj_as
 from requests import HTTPError, Session
 
-from .entities import BaseModel, Issue, IssueAttachment, IssueComment, IssueCustomFieldType, IssueTag, Project, User
+from .entities import (
+    BaseModel,
+    Issue,
+    IssueAttachment,
+    IssueComment,
+    IssueCustomFieldType,
+    IssueLink,
+    IssueLinkType,
+    IssueTag,
+    Project,
+    User,
+)
 from .exceptions import YouTrackException, YouTrackNotFound, YouTrackUnauthorized
 from .helpers import model_to_field_names, obj_to_json
+from .types import IssueLinkDirection
 
 
 class Client:
@@ -340,4 +352,71 @@ class Client:
                 offset=offset,
                 count=count,
             ),
+        )
+
+    def get_issue_links(self, issue_id: str, offset: int = 0, count: int = -1) -> Sequence[IssueLink]:
+        """Read the list of links for the issue in YouTrack.
+
+        https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-links.html#get_all-IssueLink-method
+        """
+        return parse_obj_as(
+            tuple[IssueLink, ...],
+            self._get(
+                path=f"/issues/{issue_id}/links",
+                fields=model_to_field_names(IssueLink),
+                offset=offset,
+                count=count,
+            ),
+        )
+
+    def get_issue_link_types(self, offset: int = 0, count: int = -1) -> Sequence[IssueLinkType]:
+        """Read the list of all available link types in in YouTrack.
+
+        https://www.jetbrains.com/help/youtrack/devportal/resource-api-issueLinkTypes.html#get_all-IssueLinkType-method
+        """
+        return parse_obj_as(
+            tuple[IssueLinkType, ...],
+            self._get(
+                path="/issueLinkTypes",
+                fields=model_to_field_names(IssueLinkType),
+                offset=offset,
+                count=count,
+            ),
+        )
+
+    def link_issues(
+        self,
+        *,
+        source_issue_id: str,
+        target_issue_id: str,
+        link_type_id: str,
+        link_direction: IssueLinkDirection,
+    ) -> Issue:
+        """Link an issue to another issue
+
+        https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-links-linkID-issues.html#create-Issue-method
+        """
+        return parse_obj_as(
+            Issue,
+            self._post(
+                path=f"/issues/{source_issue_id}/links/{link_type_id}{link_direction.value}/issues",
+                fields=model_to_field_names(Issue),
+                data=Issue(id=target_issue_id),
+            ),
+        )
+
+    def delete_issue_link(
+        self,
+        *,
+        source_issue_id: str,
+        target_issue_id: str,
+        link_type_id: str,
+    ):
+        """Delete the link between issues.
+
+        https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-links-linkID-issues.html#delete-Issue-method
+        """
+
+        self._delete(
+            path=f"/issues/{source_issue_id}/links/{link_type_id}/issues/{target_issue_id}",
         )

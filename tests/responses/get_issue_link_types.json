@@ -1,0 +1,54 @@
+[
+  {
+    "localizedName": null,
+    "readOnly": false,
+    "sourceToTarget": "relates to",
+    "directed": false,
+    "targetToSource": "",
+    "localizedSourceToTarget": null,
+    "localizedTargetToSource": null,
+    "aggregation": false,
+    "name": "Relates",
+    "id": "106-0",
+    "$type": "IssueLinkType"
+  },
+  {
+    "localizedName": null,
+    "readOnly": false,
+    "sourceToTarget": "is required for",
+    "directed": true,
+    "targetToSource": "depends on",
+    "localizedSourceToTarget": null,
+    "localizedTargetToSource": null,
+    "aggregation": false,
+    "name": "Depend",
+    "id": "106-1",
+    "$type": "IssueLinkType"
+  },
+  {
+    "localizedName": null,
+    "readOnly": true,
+    "sourceToTarget": "is duplicated by",
+    "directed": true,
+    "targetToSource": "duplicates",
+    "localizedSourceToTarget": null,
+    "localizedTargetToSource": null,
+    "aggregation": true,
+    "name": "Duplicate",
+    "id": "106-2",
+    "$type": "IssueLinkType"
+  },
+  {
+    "localizedName": null,
+    "readOnly": true,
+    "sourceToTarget": "parent for",
+    "directed": true,
+    "targetToSource": "subtask of",
+    "localizedSourceToTarget": null,
+    "localizedTargetToSource": null,
+    "aggregation": true,
+    "name": "Subtask",
+    "id": "106-3",
+    "$type": "IssueLinkType"
+  }
+]

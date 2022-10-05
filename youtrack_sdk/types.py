@@ -1,15 +1,9 @@
 from datetime import datetime
+from enum import Enum
 
 from pydantic.datetime_parse import from_unix_seconds
-from pydantic.errors import PydanticValueError
 
-
-class StrictIntError(PydanticValueError):
-    msg_template = "value is not a valid integer"
-
-
-class IncompatibleFieldTypeError(PydanticValueError):
-    msg_template = "incompatible field type"
+from .exceptions import IncompatibleFieldTypeError, StrictIntError
 
 
 class DateTime(datetime):
@@ -31,3 +25,9 @@ class DateTime(datetime):
             raise StrictIntError
 
         return from_unix_seconds(value)
+
+
+class IssueLinkDirection(Enum):
+    OUTWARD = "s"
+    INWARD = "t"
+    BOTH = ""
