@@ -304,3 +304,25 @@ class IssueComment(BaseModel):
     author: Optional[User]
     attachments: Optional[Sequence[IssueAttachment]]
     deleted: Optional[bool]
+
+
+class IssueLinkType(BaseModel):
+    type: Literal["IssueLinkType"] = Field(alias="$type", default="IssueLinkType")
+    id: Optional[str]
+    name: Optional[str]
+    localized_name: Optional[str] = Field(alias="localizedName")
+    source_to_target: Optional[str] = Field(alias="sourceToTarget")
+    localized_source_to_target: Optional[str] = Field(alias="localizedSourceToTarget")
+    target_to_source: Optional[str] = Field(alias="targetToSource")
+    localized_target_to_source: Optional[str] = Field(alias="localizedTargetToSource")
+    directed: Optional[bool]
+    aggregation: Optional[bool]
+    read_only: Optional[bool] = Field(alias="readOnly")
+
+
+class IssueLink(BaseModel):
+    id: Optional[str]
+    direction: Optional[Literal["OUTWARD", "INWARD", "BOTH"]]
+    link_type: Optional[IssueLinkType] = Field(alias="linkType")
+    issues: Optional[Sequence[Issue]]
+    trimmed_issues: Optional[Sequence[Issue]] = Field(alias="trimmedIssues")

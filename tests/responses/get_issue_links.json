@@ -1,0 +1,212 @@
+[
+  {
+    "direction": "BOTH",
+    "linkType": {
+      "localizedName": null,
+      "readOnly": false,
+      "sourceToTarget": "relates to",
+      "directed": false,
+      "targetToSource": "",
+      "localizedSourceToTarget": null,
+      "localizedTargetToSource": null,
+      "aggregation": false,
+      "name": "Relates",
+      "id": "106-0",
+      "$type": "IssueLinkType"
+    },
+    "issues": [],
+    "trimmedIssues": [],
+    "id": "106-0",
+    "$type": "IssueLink"
+  },
+  {
+    "direction": "OUTWARD",
+    "linkType": {
+      "localizedName": null,
+      "readOnly": false,
+      "sourceToTarget": "is required for",
+      "directed": true,
+      "targetToSource": "depends on",
+      "localizedSourceToTarget": null,
+      "localizedTargetToSource": null,
+      "aggregation": false,
+      "name": "Depend",
+      "id": "106-1",
+      "$type": "IssueLinkType"
+    },
+    "issues": [],
+    "trimmedIssues": [],
+    "id": "106-1s",
+    "$type": "IssueLink"
+  },
+  {
+    "direction": "INWARD",
+    "linkType": {
+      "localizedName": null,
+      "readOnly": false,
+      "sourceToTarget": "is required for",
+      "directed": true,
+      "targetToSource": "depends on",
+      "localizedSourceToTarget": null,
+      "localizedTargetToSource": null,
+      "aggregation": false,
+      "name": "Depend",
+      "id": "106-1",
+      "$type": "IssueLinkType"
+    },
+    "issues": [],
+    "trimmedIssues": [],
+    "id": "106-1t",
+    "$type": "IssueLink"
+  },
+  {
+    "direction": "OUTWARD",
+    "linkType": {
+      "localizedName": null,
+      "readOnly": true,
+      "sourceToTarget": "is duplicated by",
+      "directed": true,
+      "targetToSource": "duplicates",
+      "localizedSourceToTarget": null,
+      "localizedTargetToSource": null,
+      "aggregation": true,
+      "name": "Duplicate",
+      "id": "106-2",
+      "$type": "IssueLinkType"
+    },
+    "issues": [
+      {
+        "created": 1664200212810,
+        "description": "",
+        "wikifiedDescription": "",
+        "updater": {
+          "login": "paul.lawson",
+          "ringId": "d53ece48-4c60-4b88-b93f-68392b975087",
+          "email": "",
+          "name": "Paul Lawson",
+          "id": "1-64",
+          "$type": "User"
+        },
+        "updated": 1664951337291,
+        "resolved": 1664200289671,
+        "summary": "Fintra Auftrag: 99 - Last Name, First Name",
+        "reporter": {
+          "login": "mary.jane",
+          "ringId": "26677773-c425-4f47-b62c-dbfb2ad21e8f",
+          "name": "Mary Jane",
+          "id": "1-52",
+          "$type": "User"
+        },
+        "customFields": [],
+        "idReadable": "PT-1839",
+        "tags": [],
+        "project": {
+          "shortName": "PT",
+          "name": "Test: project",
+          "id": "0-4",
+          "$type": "Project"
+        },
+        "id": "2-46619",
+        "$type": "Issue"
+      }
+    ],
+    "trimmedIssues": [
+      {
+        "created": 1664200212810,
+        "description": "",
+        "wikifiedDescription": "",
+        "updater": {
+          "login": "paul.lawson",
+          "ringId": "d53ece48-4c60-4b88-b93f-68392b975087",
+          "email": "",
+          "name": "Paul Lawson",
+          "id": "1-64",
+          "$type": "User"
+        },
+        "updated": 1664951337291,
+        "resolved": 1664200289671,
+        "summary": "Fintra Auftrag: 99 - Last Name, First Name",
+        "reporter": {
+          "login": "mary.jane",
+          "ringId": "26677773-c425-4f47-b62c-dbfb2ad21e8f",
+          "name": "Mary Jane",
+          "id": "1-52",
+          "$type": "User"
+        },
+        "idReadable": "PT-1839",
+        "tags": [],
+        "project": {
+          "shortName": "PT",
+          "name": "Test: project",
+          "id": "0-4",
+          "$type": "Project"
+        },
+        "customFields": [],
+        "id": "2-46619",
+        "$type": "Issue"
+      }
+    ],
+    "id": "106-2s",
+    "$type": "IssueLink"
+  },
+  {
+    "direction": "INWARD",
+    "linkType": {
+      "localizedName": null,
+      "readOnly": true,
+      "sourceToTarget": "is duplicated by",
+      "directed": true,
+      "targetToSource": "duplicates",
+      "localizedSourceToTarget": null,
+      "localizedTargetToSource": null,
+      "aggregation": true,
+      "name": "Duplicate",
+      "id": "106-2",
+      "$type": "IssueLinkType"
+    },
+    "issues": [],
+    "trimmedIssues": [],
+    "id": "106-2t",
+    "$type": "IssueLink"
+  },
+  {
+    "direction": "OUTWARD",
+    "linkType": {
+      "readOnly": true,
+      "localizedName": null,
+      "sourceToTarget": "parent for",
+      "directed": true,
+      "targetToSource": "subtask of",
+      "localizedSourceToTarget": null,
+      "localizedTargetToSource": null,
+      "aggregation": true,
+      "name": "Subtask",
+      "id": "106-3",
+      "$type": "IssueLinkType"
+    },
+    "issues": [],
+    "trimmedIssues": [],
+    "id": "106-3s",
+    "$type": "IssueLink"
+  },
+  {
+    "direction": "INWARD",
+    "linkType": {
+      "readOnly": true,
+      "localizedName": null,
+      "sourceToTarget": "parent for",
+      "directed": true,
+      "targetToSource": "subtask of",
+      "localizedSourceToTarget": null,
+      "localizedTargetToSource": null,
+      "aggregation": true,
+      "name": "Subtask",
+      "id": "106-3",
+      "$type": "IssueLinkType"
+    },
+    "issues": [],
+    "trimmedIssues": [],
+    "id": "106-3t",
+    "$type": "IssueLink"
+  }
+]

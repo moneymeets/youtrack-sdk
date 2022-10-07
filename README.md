@@ -56,3 +56,7 @@ result = client.create_issue(
     ),
 )
 ```
+
+## Note
+
+- You should prefer to use internal entity IDs everywhere. Some methods accept readable issue IDs (e.g. HD-99) but it's not supported everywhere.
