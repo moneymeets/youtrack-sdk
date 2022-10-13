@@ -14,9 +14,7 @@ jobs:
         uses: moneymeets/action-setup-python-poetry@master
 
       - name: Run linter
-        run: |
-          find . -name '*.py' | xargs poetry run add-trailing-comma --py36-plus
-          poetry run flake8
+        uses: moneymeets/moneymeets-composite-actions/lint-python@master
 
       - name: Run tests
         run: poetry run pytest --cov --cov-fail-under=90
