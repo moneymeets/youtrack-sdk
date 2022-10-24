@@ -8,13 +8,10 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Setup Python + Poetry
-        uses: moneymeets/action-setup-python-poetry@master
+      - uses: moneymeets/action-setup-python-poetry@master
 
-      - name: Run linter
-        uses: moneymeets/moneymeets-composite-actions/lint-python@master
+      - uses: moneymeets/moneymeets-composite-actions/lint-python@master
 
-      - name: Run tests
-        run: poetry run pytest --cov --cov-fail-under=90
+      - run: poetry run pytest --cov --cov-fail-under=90
