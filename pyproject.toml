@@ -20,7 +20,6 @@ black = "*"
 flake8 = "*"
 flake8-black = "*"
 flake8-coding = "*"
-flake8-commas = "*"
 flake8-isort = "*"
 flake8-quotes = "*"
 isort = {extras = ["pyproject"], version = "*"}
