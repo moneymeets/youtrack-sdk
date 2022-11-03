@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from json import JSONDecodeError
 from typing import IO, Optional, Sequence
 
@@ -74,9 +75,9 @@ class Client:
             headers=data and {"Content-Type": "application/json"},
         )
 
-        if response.status_code == 404:
+        if response.status_code == HTTPStatus.NOT_FOUND:
             raise YouTrackNotFound
-        elif response.status_code == 401:
+        elif response.status_code == HTTPStatus.UNAUTHORIZED:
             raise YouTrackUnauthorized
         else:
             try:
