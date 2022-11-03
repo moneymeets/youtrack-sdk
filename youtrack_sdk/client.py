@@ -1,6 +1,7 @@
 from http import HTTPStatus
 from json import JSONDecodeError
 from typing import IO, Optional, Sequence
+from urllib.parse import urlencode
 
 from pydantic import parse_obj_as
 from requests import HTTPError, Session
@@ -39,19 +40,19 @@ class Client:
         fields: Optional[str] = None,
         offset: Optional[int] = None,
         count: Optional[int] = None,
-        **extra_query_kwargs,
+        **kwargs,
     ) -> str:
-        query = "&".join(
-            tuple(
-                f"{key}={value}"
+        query = urlencode(
+            {
+                key: value
                 for key, value in {
                     "fields": fields,
                     "$skip": offset,
                     "$top": count,
-                    **extra_query_kwargs,
+                    **kwargs,
                 }.items()
                 if value is not None
-            ),
+            },
         )
         return f"{self._base_url}/api{path}?{query}"
 
