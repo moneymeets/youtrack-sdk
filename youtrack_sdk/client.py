@@ -60,17 +60,13 @@ class Client:
         self,
         *,
         method: str,
-        path: str,
-        fields: Optional[str] = None,
-        offset: Optional[int] = None,
-        count: Optional[int] = None,
+        url: str,
         data: Optional[BaseModel] = None,
         files: Optional[dict[str, IO]] = None,
-        **extra_query_kwargs,
     ) -> Optional[dict]:
         response = self._session.request(
             method=method,
-            url=self._build_url(path=path, fields=fields, offset=offset, count=count, **extra_query_kwargs),
+            url=url,
             data=data and obj_to_json(data),
             files=files,
             headers=data and {"Content-Type": "application/json"},
@@ -85,7 +81,7 @@ class Client:
                 response.raise_for_status()
             except HTTPError as e:
                 raise YouTrackException(
-                    f"Unexpected status code for {method} {path}: {response.status_code}.",
+                    f"Unexpected status code for {method} {url}: {response.status_code}.",
                 ) from e
 
         # Avoid JSONDecodeError if status code was 2xx, but the response content is empty.
@@ -97,51 +93,28 @@ class Client:
             return response.json()
         except JSONDecodeError as e:
             raise YouTrackException(
-                f"Failed to decode response from {method} {path}, status={response.status_code}",
+                f"Failed to decode response from {method} {url}, status={response.status_code}",
             ) from e
 
-    def _get(
-        self,
-        *,
-        path: str,
-        fields: Optional[str] = None,
-        offset: Optional[int] = None,
-        count: Optional[int] = None,
-        **extra_query_kwargs,
-    ) -> Optional[dict]:
-        return self._send_request(
-            method="GET",
-            path=path,
-            fields=fields,
-            offset=offset,
-            count=count,
-            **extra_query_kwargs,
-        )
+    def _get(self, *, url: str) -> Optional[dict]:
+        return self._send_request(method="GET", url=url)
 
     def _post(
         self,
         *,
-        path: str,
-        fields: Optional[str] = None,
-        offset: Optional[int] = None,
-        count: Optional[int] = None,
+        url: str,
         data: Optional[BaseModel] = None,
         files: Optional[dict[str, IO]] = None,
-        **extra_query_kwargs,
     ) -> Optional[dict]:
         return self._send_request(
             method="POST",
-            path=path,
-            fields=fields,
-            offset=offset,
-            count=count,
+            url=url,
             data=data,
             files=files,
-            **extra_query_kwargs,
         )
 
-    def _delete(self, *, path: str) -> Optional[dict]:
-        return self._send_request(method="DELETE", path=path)
+    def _delete(self, *, url: str) -> Optional[dict]:
+        return self._send_request(method="DELETE", url=url)
 
     def get_issue(self, *, issue_id: str) -> Issue:
         """Read an issue with specific ID.
@@ -150,8 +123,10 @@ class Client:
         """
         return Issue.parse_obj(
             self._get(
-                path=f"/issues/{issue_id}",
-                fields=model_to_field_names(Issue),
+                url=self._build_url(
+                    path=f"/issues/{issue_id}",
+                    fields=model_to_field_names(Issue),
+                ),
             ),
         )
 
@@ -164,11 +139,13 @@ class Client:
         return parse_obj_as(
             tuple[Issue, ...],
             self._get(
-                path="/issues/",
-                fields=model_to_field_names(Issue),
-                offset=offset,
-                count=count,
-                query=query,
+                url=self._build_url(
+                    path="/issues/",
+                    fields=model_to_field_names(Issue),
+                    offset=offset,
+                    count=count,
+                    query=query,
+                ),
             ),
         )
 
@@ -179,8 +156,10 @@ class Client:
         """
         return Issue.parse_obj(
             self._post(
-                path="/issues",
-                fields=model_to_field_names(Issue),
+                url=self._build_url(
+                    path="/issues",
+                    fields=model_to_field_names(Issue),
+                ),
                 data=issue,
             ),
         )
@@ -199,10 +178,12 @@ class Client:
         return parse_obj_as(
             tuple[IssueCustomFieldType, ...],
             self._get(
-                path=f"/issues/{issue_id}/customFields",
-                fields=model_to_field_names(IssueCustomFieldType),
-                offset=offset,
-                count=count,
+                url=self._build_url(
+                    path=f"/issues/{issue_id}/customFields",
+                    fields=model_to_field_names(IssueCustomFieldType),
+                    offset=offset,
+                    count=count,
+                ),
             ),
         )
 
@@ -214,8 +195,10 @@ class Client:
         return parse_obj_as(
             IssueCustomFieldType,
             self._post(
-                path=f"/issues/{issue_id}/customFields/{field.id}",
-                fields=model_to_field_names(IssueCustomFieldType),
+                url=self._build_url(
+                    path=f"/issues/{issue_id}/customFields/{field.id}",
+                    fields=model_to_field_names(IssueCustomFieldType),
+                ),
                 data=field,
             ),
         )
@@ -225,7 +208,11 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues.html#delete-Issue-method
         """
-        self._delete(path=f"/issues/{issue_id}")
+        self._delete(
+            url=self._build_url(
+                path=f"/issues/{issue_id}",
+            ),
+        )
 
     def get_issue_comments(self, *, issue_id: str, offset: int = 0, count: int = -1) -> Sequence[IssueComment]:
         """Get all accessible comments of the specific issue.
@@ -235,10 +222,12 @@ class Client:
         return parse_obj_as(
             tuple[IssueComment, ...],
             self._get(
-                path=f"/issues/{issue_id}/comments",
-                fields=model_to_field_names(IssueComment),
-                offset=offset,
-                count=count,
+                url=self._build_url(
+                    path=f"/issues/{issue_id}/comments",
+                    fields=model_to_field_names(IssueComment),
+                    offset=offset,
+                    count=count,
+                ),
             ),
         )
 
@@ -249,8 +238,10 @@ class Client:
         """
         return IssueComment.parse_obj(
             self._post(
-                path=f"/issues/{issue_id}/comments",
-                fields=model_to_field_names(IssueComment),
+                url=self._build_url(
+                    path=f"/issues/{issue_id}/comments",
+                    fields=model_to_field_names(IssueComment),
+                ),
                 data=comment,
             ),
         )
@@ -262,8 +253,10 @@ class Client:
         """
         return IssueComment.parse_obj(
             self._post(
-                path=f"/issues/{issue_id}/comments/{comment.id}",
-                fields=model_to_field_names(IssueComment),
+                url=self._build_url(
+                    path=f"/issues/{issue_id}/comments/{comment.id}",
+                    fields=model_to_field_names(IssueComment),
+                ),
                 data=comment,
             ),
         )
@@ -280,7 +273,11 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-comments.html#delete-IssueComment-method
         """
-        self._delete(path=f"/issues/{issue_id}/comments/{comment_id}")
+        self._delete(
+            url=self._build_url(
+                path=f"/issues/{issue_id}/comments/{comment_id}",
+            ),
+        )
 
     def get_issue_attachments(self, *, issue_id: str, offset: int = 0, count: int = -1) -> Sequence[IssueAttachment]:
         """Get a list of all attachments of the specific issue.
@@ -290,10 +287,12 @@ class Client:
         return parse_obj_as(
             tuple[IssueAttachment, ...],
             self._get(
-                path=f"/issues/{issue_id}/attachments",
-                fields=model_to_field_names(IssueAttachment),
-                offset=offset,
-                count=count,
+                url=self._build_url(
+                    path=f"/issues/{issue_id}/attachments",
+                    fields=model_to_field_names(IssueAttachment),
+                    offset=offset,
+                    count=count,
+                ),
             ),
         )
 
@@ -306,8 +305,10 @@ class Client:
         return parse_obj_as(
             tuple[IssueAttachment, ...],
             self._post(
-                path=f"/issues/{issue_id}/attachments",
-                fields=model_to_field_names(IssueAttachment),
+                url=self._build_url(
+                    path=f"/issues/{issue_id}/attachments",
+                    fields=model_to_field_names(IssueAttachment),
+                ),
                 files=files,
             ),
         )
@@ -322,8 +323,10 @@ class Client:
         return parse_obj_as(
             tuple[IssueAttachment, ...],
             self._post(
-                path=f"/issues/{issue_id}/comments/{comment_id}/attachments",
-                fields=model_to_field_names(IssueAttachment),
+                url=self._build_url(
+                    path=f"/issues/{issue_id}/comments/{comment_id}/attachments",
+                    fields=model_to_field_names(IssueAttachment),
+                ),
                 files=files,
             ),
         )
@@ -336,10 +339,12 @@ class Client:
         return parse_obj_as(
             tuple[Project, ...],
             self._get(
-                path="/admin/projects",
-                fields=model_to_field_names(Project),
-                offset=offset,
-                count=count,
+                url=self._build_url(
+                    path="/admin/projects",
+                    fields=model_to_field_names(Project),
+                    offset=offset,
+                    count=count,
+                ),
             ),
         )
 
@@ -351,16 +356,20 @@ class Client:
         return parse_obj_as(
             tuple[IssueTag, ...],
             self._get(
-                path="/issueTags",
-                fields=model_to_field_names(IssueTag),
-                offset=offset,
-                count=count,
+                url=self._build_url(
+                    path="/issueTags",
+                    fields=model_to_field_names(IssueTag),
+                    offset=offset,
+                    count=count,
+                ),
             ),
         )
 
     def add_issue_tag(self, *, issue_id: str, tag: IssueTag):
         self._post(
-            path=f"/issues/{issue_id}/tags",
+            url=self._build_url(
+                path=f"/issues/{issue_id}/tags",
+            ),
             data=tag,
         )
 
@@ -372,10 +381,12 @@ class Client:
         return parse_obj_as(
             tuple[User, ...],
             self._get(
-                path="/users",
-                fields=model_to_field_names(User),
-                offset=offset,
-                count=count,
+                url=self._build_url(
+                    path="/users",
+                    fields=model_to_field_names(User),
+                    offset=offset,
+                    count=count,
+                ),
             ),
         )
 
@@ -387,10 +398,12 @@ class Client:
         return parse_obj_as(
             tuple[IssueLink, ...],
             self._get(
-                path=f"/issues/{issue_id}/links",
-                fields=model_to_field_names(IssueLink),
-                offset=offset,
-                count=count,
+                url=self._build_url(
+                    path=f"/issues/{issue_id}/links",
+                    fields=model_to_field_names(IssueLink),
+                    offset=offset,
+                    count=count,
+                ),
             ),
         )
 
@@ -402,10 +415,12 @@ class Client:
         return parse_obj_as(
             tuple[IssueLinkType, ...],
             self._get(
-                path="/issueLinkTypes",
-                fields=model_to_field_names(IssueLinkType),
-                offset=offset,
-                count=count,
+                url=self._build_url(
+                    path="/issueLinkTypes",
+                    fields=model_to_field_names(IssueLinkType),
+                    offset=offset,
+                    count=count,
+                ),
             ),
         )
 
@@ -424,8 +439,10 @@ class Client:
         return parse_obj_as(
             Issue,
             self._post(
-                path=f"/issues/{source_issue_id}/links/{link_type_id}{link_direction.value}/issues",
-                fields=model_to_field_names(Issue),
+                url=self._build_url(
+                    path=f"/issues/{source_issue_id}/links/{link_type_id}{link_direction.value}/issues",
+                    fields=model_to_field_names(Issue),
+                ),
                 data=Issue(id=target_issue_id),
             ),
         )
@@ -441,7 +458,8 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-links-linkID-issues.html#delete-Issue-method
         """
-
         self._delete(
-            path=f"/issues/{source_issue_id}/links/{link_type_id}/issues/{target_issue_id}",
+            url=self._build_url(
+                path=f"/issues/{source_issue_id}/links/{link_type_id}/issues/{target_issue_id}",
+            ),
         )
