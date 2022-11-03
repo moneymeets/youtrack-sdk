@@ -231,6 +231,68 @@ class TestClient(TestCase):
             self.client.get_issue(issue_id="1"),
         )
 
+    @mock_response(url="https://server/api/issues/", response_name="get_issues")
+    def test_get_issues(self):
+        self.assertEqual(
+            (
+                Issue.construct(
+                    type="Issue",
+                    id="12-379",
+                    id_readable="TD-001",
+                    created=datetime(2022, 10, 26, 9, 44, 44, 495000, tzinfo=timezone.utc),
+                    updated=datetime(2022, 10, 27, 16, 46, 11, 562000, tzinfo=timezone.utc),
+                    resolved=None,
+                    project=Project(
+                        type="Project",
+                        id="0-4",
+                        name="Test Project",
+                        short_name="TD",
+                    ),
+                    reporter=User(
+                        type="User",
+                        id="12",
+                        name="support",
+                        ringId="8711cd4-90e3-445d-87ae-0925c9e1159d",
+                        login="Support",
+                        email=None,
+                    ),
+                    summary="Project Summary",
+                    description="Issue description",
+                    wikified_description="",
+                    tags=[],
+                    custom_fields=[],
+                ),
+                Issue.construct(
+                    type="Issue",
+                    id="12-378",
+                    id_readable="TD-002",
+                    created=datetime(2022, 10, 26, 9, 44, 44, 495000, tzinfo=timezone.utc),
+                    updated=datetime(2022, 10, 27, 16, 46, 11, 562000, tzinfo=timezone.utc),
+                    resolved=None,
+                    project=Project(
+                        type="Project",
+                        id="0-4",
+                        name="Test Project",
+                        short_name="TD",
+                    ),
+                    reporter=User(
+                        type="User",
+                        id="12",
+                        name="support",
+                        ringId="8711cd4-90e3-445d-87ae-0925c9e1159d",
+                        login="Support",
+                        email=None,
+                    ),
+                    summary="Project Summary",
+                    description="Issue description",
+                    wikified_description="",
+                    tags=[],
+                    custom_fields=[],
+                ),
+            ),
+            self.client.get_issues(query="in:TD for:me"),
+        )
+
     @mock_response(url="https://server/api/issues/1/comments", response_name="get_issue_comments")
     def test_get_issue_comments(self):
         self.assertEqual(

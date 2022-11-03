@@ -38,6 +38,7 @@ class Client:
         fields: Optional[str] = None,
         offset: Optional[int] = None,
         count: Optional[int] = None,
+        **extra_query_kwargs,
     ) -> str:
         query = "&".join(
             tuple(
@@ -46,11 +47,11 @@ class Client:
                     "fields": fields,
                     "$skip": offset,
                     "$top": count,
+                    **extra_query_kwargs,
                 }.items()
                 if value is not None
             ),
         )
-
         return f"{self._base_url}/api{path}?{query}"
 
     def _send_request(
@@ -63,10 +64,11 @@ class Client:
         count: Optional[int] = None,
         data: Optional[BaseModel] = None,
         files: Optional[dict[str, IO]] = None,
+        **extra_query_kwargs,
     ) -> Optional[dict]:
         response = self._session.request(
             method=method,
-            url=self._build_url(path=path, fields=fields, offset=offset, count=count),
+            url=self._build_url(path=path, fields=fields, offset=offset, count=count, **extra_query_kwargs),
             data=data and obj_to_json(data),
             files=files,
             headers=data and {"Content-Type": "application/json"},
@@ -103,6 +105,7 @@ class Client:
         fields: Optional[str] = None,
         offset: Optional[int] = None,
         count: Optional[int] = None,
+        **extra_query_kwargs,
     ) -> Optional[dict]:
         return self._send_request(
             method="GET",
@@ -110,6 +113,7 @@ class Client:
             fields=fields,
             offset=offset,
             count=count,
+            **extra_query_kwargs,
         )
 
     def _post(
@@ -121,6 +125,7 @@ class Client:
         count: Optional[int] = None,
         data: Optional[BaseModel] = None,
         files: Optional[dict[str, IO]] = None,
+        **extra_query_kwargs,
     ) -> Optional[dict]:
         return self._send_request(
             method="POST",
@@ -130,6 +135,7 @@ class Client:
             count=count,
             data=data,
             files=files,
+            **extra_query_kwargs,
         )
 
     def _delete(self, *, path: str) -> Optional[dict]:
@@ -144,6 +150,23 @@ class Client:
             self._get(
                 path=f"/issues/{issue_id}",
                 fields=model_to_field_names(Issue),
+            ),
+        )
+
+    def get_issues(self, *, query: Optional[str] = None, offset: int = 0, count: int = -1) -> Sequence[Issue]:
+        """Get all issues that match the specified query.
+        If you don't provide the query parameter, the server returns all issues.
+
+        https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues.html#get_all-Issue-method
+        """
+        return parse_obj_as(
+            tuple[Issue, ...],
+            self._get(
+                path="/issues/",
+                fields=model_to_field_names(Issue),
+                offset=offset,
+                count=count,
+                query=query,
             ),
         )
 
