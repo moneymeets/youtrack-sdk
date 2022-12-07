@@ -44,7 +44,7 @@ class Client:
     ) -> str:
         query = urlencode(
             {
-                key: value
+                key: str(value).lower() if isinstance(value, bool) else value
                 for key, value in {
                     "fields": fields,
                     "$skip": offset,
@@ -159,6 +159,22 @@ class Client:
                 url=self._build_url(
                     path="/issues",
                     fields=model_to_field_names(Issue),
+                ),
+                data=issue,
+            ),
+        )
+
+    def update_issue(self, *, issue_id: str, issue: Issue, mute_update_notifications: bool = False) -> Issue:
+        """Update an existing issue.
+
+        https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues.html#update-Issue-method
+        """
+        return Issue.parse_obj(
+            self._post(
+                url=self._build_url(
+                    path=f"/issues/{issue_id}",
+                    fields=model_to_field_names(Issue),
+                    muteUpdateNotifications=mute_update_notifications,
                 ),
                 data=issue,
             ),
