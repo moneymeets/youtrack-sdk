@@ -279,6 +279,7 @@ class Issue(BaseModel):
     summary: Optional[str]
     description: Optional[str]
     wikified_description: Optional[str] = Field(alias="wikifiedDescription")
+    comments_count: Optional[int] = Field(alias="commentsCount")
     tags: Optional[Sequence[IssueTag]]
     custom_fields: Optional[Sequence[IssueCustomFieldType]] = Field(alias="customFields")
 
