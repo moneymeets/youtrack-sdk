@@ -50,6 +50,7 @@ TEST_ISSUE = Issue.construct(
     summary="Summary text",
     description="Issue description",
     wikified_description="Wikified issue description",
+    comments_count=7,
     tags=[
         IssueTag.construct(type="IssueTag", id="5-7", name="Review"),
     ],

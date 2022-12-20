@@ -99,6 +99,7 @@
         },
         "customFields": [],
         "idReadable": "PT-1839",
+        "commentsCount": 5,
         "tags": [],
         "project": {
           "shortName": "PT",
@@ -133,7 +134,8 @@
           "id": "1-52",
           "$type": "User"
         },
-        "idReadable": "PT-1839",
+        "idReadable": "PT-1840",
+        "commentsCount": 0,
         "tags": [],
         "project": {
           "shortName": "PT",
