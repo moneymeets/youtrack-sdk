@@ -1,6 +1,6 @@
 from http import HTTPStatus
 from json import JSONDecodeError
-from typing import IO, Optional, Sequence
+from typing import IO, Optional, Sequence, Type, TypeVar
 from urllib.parse import urlencode
 
 from pydantic import parse_obj_as
@@ -21,6 +21,8 @@ from .entities import (
 from .exceptions import YouTrackException, YouTrackNotFound, YouTrackUnauthorized
 from .helpers import model_to_field_names, obj_to_json
 from .types import IssueLinkDirection
+
+T = TypeVar("T", bound=BaseModel)
 
 
 class Client:
@@ -53,6 +55,7 @@ class Client:
                 }.items()
                 if value is not None
             },
+            doseq=True,
         )
         return f"{self._base_url}/api{path}?{query}"
 
@@ -130,21 +133,30 @@ class Client:
             ),
         )
 
-    def get_issues(self, *, query: Optional[str] = None, offset: int = 0, count: int = -1) -> Sequence[Issue]:
+    def get_issues(
+        self,
+        *,
+        model: Type[T] = Issue,
+        query: Optional[str] = None,
+        custom_fields: Sequence[str] = (),
+        offset: int = 0,
+        count: int = -1,
+    ) -> Sequence[T]:
         """Get all issues that match the specified query.
         If you don't provide the query parameter, the server returns all issues.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues.html#get_all-Issue-method
         """
         return parse_obj_as(
-            tuple[Issue, ...],
+            tuple[model, ...],
             self._get(
                 url=self._build_url(
                     path="/issues/",
-                    fields=model_to_field_names(Issue),
+                    fields=model_to_field_names(model),
+                    query=query,
+                    customFields=custom_fields,
                     offset=offset,
                     count=count,
-                    query=query,
                 ),
             ),
         )

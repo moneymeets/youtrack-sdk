@@ -1,0 +1,102 @@
+[
+  {
+    "created": 1612879391000,
+    "idReadable": "HD-25",
+    "updated": 1629628096000,
+    "resolved": null,
+    "commentsCount": 7,
+    "customFields": [
+      {
+        "value": {
+          "name": "In Progress",
+          "id": "98-37",
+          "$type": "StateBundleElement"
+        },
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "state[1]",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "StateProjectCustomField"
+        },
+        "name": "State",
+        "id": "110-50",
+        "$type": "StateIssueCustomField"
+      },
+      {
+        "value": {
+          "name": "Value One",
+          "id": "96-38",
+          "$type": "EnumBundleElement"
+        },
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "enum[1]",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "EnumProjectCustomField"
+        },
+        "name": "Type",
+        "id": "110-49",
+        "$type": "SingleEnumIssueCustomField"
+      }
+    ],
+    "$type": "Issue"
+  },
+  {
+    "created": 1666777484000,
+    "idReadable": "HD-17",
+    "updated": 1666889171000,
+    "resolved": 1667152915000,
+    "commentsCount": 0,
+    "customFields": [
+      {
+        "value": {
+          "name": "Fixed",
+          "id": "98-22",
+          "$type": "StateBundleElement"
+        },
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "state[1]",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "StateProjectCustomField"
+        },
+        "name": "State",
+        "id": "110-50",
+        "$type": "StateIssueCustomField"
+      },
+      {
+        "value": {
+          "name": "Other",
+          "id": "96-95",
+          "$type": "EnumBundleElement"
+        },
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "enum[1]",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "EnumProjectCustomField"
+        },
+        "name": "Type",
+        "id": "110-49",
+        "$type": "SingleEnumIssueCustomField"
+      }
+    ],
+    "$type": "Issue"
+  }
+]
