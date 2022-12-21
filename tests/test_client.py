@@ -48,7 +48,7 @@ class TestClient(TestCase):
             self.client.get_issue(issue_id="1"),
         )
 
-    @mock_response(url="https://server/api/issues/", response_name="get_issues")
+    @mock_response(url="https://server/api/issues/", response_name="issues")
     def test_get_issues(self):
         self.assertEqual(
             (
@@ -112,7 +112,7 @@ class TestClient(TestCase):
             self.client.get_issues(query="in:TD for:me"),
         )
 
-    @mock_response(url="https://server/api/issues/1/comments", response_name="get_issue_comments")
+    @mock_response(url="https://server/api/issues/1/comments", response_name="issue_comments")
     def test_get_issue_comments(self):
         self.assertEqual(
             (
@@ -182,7 +182,7 @@ class TestClient(TestCase):
             self.client.get_issue_comments(issue_id="1"),
         )
 
-    @mock_response(url="https://server/api/admin/projects", response_name="get_projects")
+    @mock_response(url="https://server/api/admin/projects", response_name="projects")
     def test_get_projects(self):
         self.assertEqual(
             (
@@ -202,7 +202,7 @@ class TestClient(TestCase):
             self.client.get_projects(),
         )
 
-    @mock_response(url="https://server/api/issueTags", response_name="get_tags")
+    @mock_response(url="https://server/api/issueTags", response_name="tags")
     def test_get_tags(self):
         self.assertEqual(
             (
@@ -225,7 +225,7 @@ class TestClient(TestCase):
             self.client.get_tags(),
         )
 
-    @mock_response(url="https://server/api/users", response_name="get_users")
+    @mock_response(url="https://server/api/users", response_name="users")
     def test_get_users(self):
         self.assertEqual(
             (
@@ -262,7 +262,7 @@ class TestClient(TestCase):
             self.client.get_users(),
         )
 
-    @mock_response(url="https://server/api/issueLinkTypes", response_name="get_issue_link_types")
+    @mock_response(url="https://server/api/issueLinkTypes", response_name="issue_link_types")
     def test_get_issue_link_types(self):
         self.assertEqual(
             (
@@ -322,7 +322,7 @@ class TestClient(TestCase):
             self.client.get_issue_link_types(),
         )
 
-    @mock_response(url="https://server/api/issues/1/links", response_name="get_issue_links")
+    @mock_response(url="https://server/api/issues/1/links", response_name="issue_links")
     def test_get_issue_links(self):
         self.assertEqual(
             (
