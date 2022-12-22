@@ -17,7 +17,7 @@ from youtrack_sdk.entities import (
     User,
 )
 
-from .test_definitions import TEST_ISSUE
+from .test_definitions import TEST_CUSTOM_ISSUE, TEST_CUSTOM_ISSUE_2, TEST_ISSUE, TEST_ISSUE_2, CustomIssue
 
 
 def mock_response(url: str, response_name: str, method: str = "GET"):
@@ -48,71 +48,21 @@ class TestClient(TestCase):
             self.client.get_issue(issue_id="1"),
         )
 
-    @mock_response(url="https://server/api/issues/", response_name="get_issues")
+    @mock_response(url="https://server/api/issues/", response_name="issues")
     def test_get_issues(self):
         self.assertEqual(
-            (
-                Issue.construct(
-                    type="Issue",
-                    id="12-379",
-                    id_readable="TD-001",
-                    created=datetime(2022, 10, 26, 9, 44, 44, 495000, tzinfo=timezone.utc),
-                    updated=datetime(2022, 10, 27, 16, 46, 11, 562000, tzinfo=timezone.utc),
-                    resolved=None,
-                    project=Project(
-                        type="Project",
-                        id="0-4",
-                        name="Test Project",
-                        short_name="TD",
-                    ),
-                    reporter=User(
-                        type="User",
-                        id="12",
-                        name="support",
-                        ringId="8711cd4-90e3-445d-87ae-0925c9e1159d",
-                        login="Support",
-                        email=None,
-                    ),
-                    summary="Project Summary",
-                    description="Issue description",
-                    wikified_description="",
-                    comments_count=3,
-                    tags=[],
-                    custom_fields=[],
-                ),
-                Issue.construct(
-                    type="Issue",
-                    id="12-378",
-                    id_readable="TD-002",
-                    created=datetime(2022, 10, 26, 9, 44, 44, 495000, tzinfo=timezone.utc),
-                    updated=datetime(2022, 10, 27, 16, 46, 11, 562000, tzinfo=timezone.utc),
-                    resolved=None,
-                    project=Project(
-                        type="Project",
-                        id="0-4",
-                        name="Test Project",
-                        short_name="TD",
-                    ),
-                    reporter=User(
-                        type="User",
-                        id="12",
-                        name="support",
-                        ringId="8711cd4-90e3-445d-87ae-0925c9e1159d",
-                        login="Support",
-                        email=None,
-                    ),
-                    summary="Project Summary",
-                    description="Issue description",
-                    wikified_description="",
-                    comments_count=0,
-                    tags=[],
-                    custom_fields=[],
-                ),
-            ),
+            (TEST_ISSUE, TEST_ISSUE_2),
             self.client.get_issues(query="in:TD for:me"),
         )
 
-    @mock_response(url="https://server/api/issues/1/comments", response_name="get_issue_comments")
+    @mock_response(url="https://server/api/issues/", response_name="issues_custom_model")
+    def test_get_issues_custom_model(self):
+        self.assertEqual(
+            (TEST_CUSTOM_ISSUE, TEST_CUSTOM_ISSUE_2),
+            self.client.get_issues(model=CustomIssue, custom_fields=["State", "Type"]),
+        )
+
+    @mock_response(url="https://server/api/issues/1/comments", response_name="issue_comments")
     def test_get_issue_comments(self):
         self.assertEqual(
             (
@@ -182,7 +132,7 @@ class TestClient(TestCase):
             self.client.get_issue_comments(issue_id="1"),
         )
 
-    @mock_response(url="https://server/api/admin/projects", response_name="get_projects")
+    @mock_response(url="https://server/api/admin/projects", response_name="projects")
     def test_get_projects(self):
         self.assertEqual(
             (
@@ -202,7 +152,7 @@ class TestClient(TestCase):
             self.client.get_projects(),
         )
 
-    @mock_response(url="https://server/api/issueTags", response_name="get_tags")
+    @mock_response(url="https://server/api/issueTags", response_name="tags")
     def test_get_tags(self):
         self.assertEqual(
             (
@@ -225,7 +175,7 @@ class TestClient(TestCase):
             self.client.get_tags(),
         )
 
-    @mock_response(url="https://server/api/users", response_name="get_users")
+    @mock_response(url="https://server/api/users", response_name="users")
     def test_get_users(self):
         self.assertEqual(
             (
@@ -262,7 +212,7 @@ class TestClient(TestCase):
             self.client.get_users(),
         )
 
-    @mock_response(url="https://server/api/issueLinkTypes", response_name="get_issue_link_types")
+    @mock_response(url="https://server/api/issueLinkTypes", response_name="issue_link_types")
     def test_get_issue_link_types(self):
         self.assertEqual(
             (
@@ -322,7 +272,7 @@ class TestClient(TestCase):
             self.client.get_issue_link_types(),
         )
 
-    @mock_response(url="https://server/api/issues/1/links", response_name="get_issue_links")
+    @mock_response(url="https://server/api/issues/1/links", response_name="issue_links")
     def test_get_issue_links(self):
         self.assertEqual(
             (

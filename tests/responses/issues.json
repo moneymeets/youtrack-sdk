@@ -1,0 +1,389 @@
+[
+  {
+    "created": 1612879391000,
+    "description": "Issue description",
+    "project": {
+      "shortName": "HD",
+      "name": "Help Desk",
+      "id": "0-1",
+      "$type": "Project"
+    },
+    "idReadable": "HD-25",
+    "summary": "Summary text",
+    "updated": 1629628096000,
+    "resolved": null,
+    "commentsCount": 7,
+    "tags": [
+      {
+        "name": "Review",
+        "id": "5-7",
+        "$type": "IssueTag"
+      }
+    ],
+    "reporter": {
+      "login": "support",
+      "ringId": "b0fea1e1-ed18-43f6-a99d-40044fb1dfb0",
+      "email": "support@example.com",
+      "id": "1-3",
+      "$type": "User"
+    },
+    "customFields": [
+      {
+        "value": {
+          "name": "In Progress",
+          "id": "98-37",
+          "$type": "StateBundleElement"
+        },
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "state[1]",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "StateProjectCustomField"
+        },
+        "name": "State",
+        "id": "110-50",
+        "$type": "StateIssueCustomField"
+      },
+      {
+        "value": {
+          "login": "worker",
+          "ringId": "20e4e701-7e87-45f8-8492-c448600b7991",
+          "email": "worker@example.com",
+          "name": "Worker Buddy",
+          "id": "1-10",
+          "$type": "User"
+        },
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "user[1]",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "UserProjectCustomField"
+        },
+        "name": "Assignee",
+        "id": "111-8",
+        "$type": "SingleUserIssueCustomField"
+      },
+      {
+        "value": {
+          "name": "Value One",
+          "id": "96-38",
+          "$type": "EnumBundleElement"
+        },
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "enum[1]",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "EnumProjectCustomField"
+        },
+        "name": "Type",
+        "id": "110-49",
+        "$type": "SingleEnumIssueCustomField"
+      },
+      {
+        "value": 1645110000000,
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "date",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "SimpleProjectCustomField"
+        },
+        "name": "Due Date",
+        "id": "145-34",
+        "$type": "DateIssueCustomField"
+      },
+      {
+        "value": 1623396729000,
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "date and time",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "SimpleProjectCustomField"
+        },
+        "name": "Started at",
+        "id": "145-35",
+        "$type": "SimpleIssueCustomField"
+      },
+      {
+        "value": "1623396729",
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "string",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "SimpleProjectCustomField"
+        },
+        "name": "Multipass",
+        "id": "145-36",
+        "$type": "SimpleIssueCustomField"
+      },
+      {
+        "value": 4003,
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "integer",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "SimpleProjectCustomField"
+        },
+        "name": "Price",
+        "id": "145-39",
+        "$type": "SimpleIssueCustomField"
+      },
+      {
+        "value": 3.1412,
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "float",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "SimpleProjectCustomField"
+        },
+        "name": "Multiplier",
+        "id": "145-37",
+        "$type": "SimpleIssueCustomField"
+      },
+      {
+        "value": null,
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "string",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "SimpleProjectCustomField"
+        },
+        "name": "Extra",
+        "id": "145-38",
+        "$type": "SimpleIssueCustomField"
+      }
+    ],
+    "wikifiedDescription": "Wikified issue description",
+    "updater": {
+      "login": "max.demo",
+      "ringId": "c5d08431-dd52-4cdd-9911-7ec3a18ad117",
+      "email": "max@example.com",
+      "id": "1-17",
+      "$type": "User"
+    },
+    "id": "1-937",
+    "$type": "Issue"
+  },
+  {
+    "created": 1666777484000,
+    "description": "Some text",
+    "project": {
+      "shortName": "HD",
+      "name": "Help Desk",
+      "id": "0-1",
+      "$type": "Project"
+    },
+    "idReadable": "HD-17",
+    "summary": "Title",
+    "updated": 1666889171000,
+    "resolved": 1667152915000,
+    "commentsCount": 0,
+    "tags": [],
+    "reporter": {
+      "login": "alex",
+      "ringId": "8711cd4-90e3-445d-87ae-0925c9e1159d",
+      "email": "alex@example.com",
+      "id": "1-1",
+      "$type": "User"
+    },
+    "customFields": [
+      {
+        "value": {
+          "name": "Fixed",
+          "id": "98-22",
+          "$type": "StateBundleElement"
+        },
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "state[1]",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "StateProjectCustomField"
+        },
+        "name": "State",
+        "id": "110-50",
+        "$type": "StateIssueCustomField"
+      },
+      {
+        "value": null,
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "user[1]",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "UserProjectCustomField"
+        },
+        "name": "Assignee",
+        "id": "111-8",
+        "$type": "SingleUserIssueCustomField"
+      },
+      {
+        "value": {
+          "name": "Other",
+          "id": "96-95",
+          "$type": "EnumBundleElement"
+        },
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "enum[1]",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "EnumProjectCustomField"
+        },
+        "name": "Type",
+        "id": "110-49",
+        "$type": "SingleEnumIssueCustomField"
+      },
+      {
+        "value": null,
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "date",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "SimpleProjectCustomField"
+        },
+        "name": "Due Date",
+        "id": "145-34",
+        "$type": "DateIssueCustomField"
+      },
+      {
+        "value": 1666812064000,
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "date and time",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "SimpleProjectCustomField"
+        },
+        "name": "Started at",
+        "id": "145-35",
+        "$type": "SimpleIssueCustomField"
+      },
+      {
+        "value": "2000000000000",
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "string",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "SimpleProjectCustomField"
+        },
+        "name": "Multipass",
+        "id": "145-36",
+        "$type": "SimpleIssueCustomField"
+      },
+      {
+        "value": -128,
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "integer",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "SimpleProjectCustomField"
+        },
+        "name": "Price",
+        "id": "145-39",
+        "$type": "SimpleIssueCustomField"
+      },
+      {
+        "value": -2.4,
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "float",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "SimpleProjectCustomField"
+        },
+        "name": "Multiplier",
+        "id": "145-37",
+        "$type": "SimpleIssueCustomField"
+      },
+      {
+        "value": null,
+        "projectCustomField": {
+          "field": {
+            "fieldType": {
+              "id": "string",
+              "$type": "FieldType"
+            },
+            "$type": "CustomField"
+          },
+          "$type": "SimpleProjectCustomField"
+        },
+        "name": "Extra",
+        "id": "145-38",
+        "$type": "SimpleIssueCustomField"
+      }
+    ],
+    "wikifiedDescription": "Wikified some text",
+    "updater": {
+      "login": "max.demo",
+      "ringId": "c5d08431-dd52-4cdd-9911-7ec3a18ad117",
+      "email": "max@example.com",
+      "id": "1-17",
+      "$type": "User"
+    },
+    "id": "2-48",
+    "$type": "Issue"
+  }
+]
