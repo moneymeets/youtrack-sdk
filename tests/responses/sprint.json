@@ -1,0 +1,18 @@
+{
+  "isDefault": false,
+  "start": 1674950400000,
+  "issues": [],
+  "archived": false,
+  "agile": {
+    "name": "Kanban",
+    "id": "120-8",
+    "$type": "Agile"
+  },
+  "goal": null,
+  "finish": 1675555199999,
+  "unresolvedIssuesCount": 0,
+  "previousSprint": null,
+  "name": "Week 1",
+  "id": "121-8",
+  "$type": "Sprint"
+}

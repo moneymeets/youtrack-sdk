@@ -10,6 +10,8 @@ from requests import ConnectTimeout
 import youtrack_sdk.client
 from youtrack_sdk.client import Client
 from youtrack_sdk.entities import (
+    Agile,
+    AgileRef,
     Issue,
     IssueAttachment,
     IssueComment,
@@ -17,10 +19,20 @@ from youtrack_sdk.entities import (
     IssueLinkType,
     IssueTag,
     Project,
+    Sprint,
+    SprintRef,
     User,
 )
 
-from .test_definitions import TEST_CUSTOM_ISSUE, TEST_CUSTOM_ISSUE_2, TEST_ISSUE, TEST_ISSUE_2, CustomIssue
+from .test_definitions import (
+    TEST_AGILE,
+    TEST_CUSTOM_ISSUE,
+    TEST_CUSTOM_ISSUE_2,
+    TEST_ISSUE,
+    TEST_ISSUE_2,
+    TEST_SPRINT,
+    CustomIssue,
+)
 
 
 def mock_response(url: str, response_name: str, method: str = "GET"):
@@ -502,4 +514,88 @@ class TestClient(TestCase):
         self.assertEqual(
             TEST_ISSUE,
             self.client.update_issue(issue_id="1", issue=TEST_ISSUE),
+        )
+
+    @mock_response(url="https://server/api/agiles", response_name="agiles", method="GET")
+    def test_get_agiles(self):
+        self.assertEqual(
+            (
+                Agile.construct(
+                    type="Agile",
+                    id="120-0",
+                    name="Demo Board",
+                    owner=User.construct(
+                        type="User",
+                        id="1-17",
+                        name="Max Demo",
+                        ring_id="c5d08431-dd52-4cdd-9911-7ec3a18ad117",
+                        login="max.demo",
+                        email="max@example.com",
+                    ),
+                    visible_for=None,
+                    projects=[
+                        Project.construct(
+                            type="Project",
+                            id="0-0",
+                            name="Demo project",
+                            short_name="DEMO",
+                        ),
+                    ],
+                    sprints=[
+                        SprintRef.construct(
+                            type="Sprint",
+                            id="121-12",
+                            name="First sprint",
+                        ),
+                    ],
+                    current_sprint=SprintRef.construct(
+                        type="Sprint",
+                        id="121-12",
+                        name="First sprint",
+                    ),
+                ),
+                TEST_AGILE,
+            ),
+            self.client.get_agiles(),
+        )
+
+    @mock_response(url="https://server/api/agiles/120-8", response_name="agile", method="GET")
+    def test_get_agile(self):
+        self.assertEqual(
+            TEST_AGILE,
+            self.client.get_agile(agile_id="120-8"),
+        )
+
+    @mock_response(url="https://server/api/agiles/120-8/sprints", response_name="sprints", method="GET")
+    def test_get_sprints(self):
+        self.assertEqual(
+            (
+                TEST_SPRINT,
+                Sprint.construct(
+                    type="Sprint",
+                    id="121-11",
+                    name="Week 2",
+                    goal="Finish everything",
+                    start=datetime(2023, 2, 5, 0, 0, tzinfo=timezone.utc),
+                    finish=datetime(2023, 2, 18, 23, 59, 59, 999000, tzinfo=timezone.utc),
+                    archived=False,
+                    is_default=False,
+                    unresolved_issues_count=0,
+                    agile=AgileRef.construct(
+                        type="Agile",
+                        id="120-8",
+                        name="Kanban",
+                    ),
+                    issues=[TEST_ISSUE],
+                    previous_sprint=None,
+                ),
+            ),
+            self.client.get_sprints(agile_id="120-8"),
+        )
+
+    @mock_response(url="https://server/api/agiles/120-8/sprints/121-8", response_name="sprint", method="GET")
+    def test_get_sprint(self):
+        self.assertEqual(
+            TEST_SPRINT,
+            self.client.get_sprint(agile_id="120-8", sprint_id="121-8"),
         )

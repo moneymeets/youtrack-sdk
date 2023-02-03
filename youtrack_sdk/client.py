@@ -7,6 +7,7 @@ from pydantic import parse_obj_as
 from requests import HTTPError, Session
 
 from .entities import (
+    Agile,
     BaseModel,
     Issue,
     IssueAttachment,
@@ -16,6 +17,7 @@ from .entities import (
     IssueLinkType,
     IssueTag,
     Project,
+    Sprint,
     User,
 )
 from .exceptions import YouTrackException, YouTrackNotFound, YouTrackUnauthorized
@@ -497,5 +499,67 @@ class Client:
         self._delete(
             url=self._build_url(
                 path=f"/issues/{source_issue_id}/links/{link_type_id}/issues/{target_issue_id}",
+            ),
+        )
+
+    def get_agiles(self, *, offset: int = 0, count: int = -1) -> Sequence[Agile]:
+        """Get the list of all available agile boards in the system.
+
+        https://www.jetbrains.com/help/youtrack/devportal/resource-api-agiles.html#get_all-Agile-method
+        """
+        return parse_obj_as(
+            tuple[Agile, ...],
+            self._get(
+                url=self._build_url(
+                    path="/agiles",
+                    fields=model_to_field_names(Agile),
+                    offset=offset,
+                    count=count,
+                ),
+            ),
+        )
+
+    def get_agile(self, *, agile_id: str) -> Agile:
+        """Get settings of the specific agile board.
+
+        https://www.jetbrains.com/help/youtrack/devportal/operations-api-agiles.html#get-Agile-method
+        """
+        return Agile.parse_obj(
+            self._get(
+                url=self._build_url(
+                    path=f"/agiles/{agile_id}",
+                    fields=model_to_field_names(Agile),
+                ),
+            ),
+        )
+
+    def get_sprints(self, *, agile_id: str, offset: int = 0, count: int = -1) -> Sequence[Sprint]:
+        """Get the list of all sprints of the agile board.
+
+        https://www.jetbrains.com/help/youtrack/devportal/resource-api-agiles-agileID-sprints.html#get_all-Sprint-method
+        """
+        return parse_obj_as(
+            tuple[Sprint, ...],
+            self._get(
+                url=self._build_url(
+                    path=f"/agiles/{agile_id}/sprints",
+                    fields=model_to_field_names(Sprint),
+                    offset=offset,
+                    count=count,
+                ),
+            ),
+        )
+
+    def get_sprint(self, *, agile_id: str, sprint_id: str) -> Sprint:
+        """Get settings of the specific sprint of the agile board.
+
+        https://www.jetbrains.com/help/youtrack/devportal/operations-api-agiles-agileID-sprints.html#get-Sprint-method
+        """
+        return Sprint.parse_obj(
+            self._get(
+                url=self._build_url(
+                    path=f"/agiles/{agile_id}/sprints/{sprint_id}",
+                    fields=model_to_field_names(Sprint),
+                ),
             ),
         )

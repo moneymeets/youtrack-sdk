@@ -4,6 +4,8 @@ from typing import Literal, Optional, Sequence
 from pydantic import Field
 
 from youtrack_sdk.entities import (
+    Agile,
+    AgileRef,
     BaseModel,
     CustomField,
     DateIssueCustomField,
@@ -18,10 +20,13 @@ from youtrack_sdk.entities import (
     SimpleProjectCustomField,
     SingleEnumIssueCustomField,
     SingleUserIssueCustomField,
+    Sprint,
+    SprintRef,
     StateBundleElement,
     StateIssueCustomField,
     StateProjectCustomField,
     User,
+    UserGroup,
     UserProjectCustomField,
 )
 
@@ -67,9 +72,7 @@ TEST_ISSUE = Issue.construct(
     description="Issue description",
     wikified_description="Wikified issue description",
     comments_count=7,
-    tags=[
-        IssueTag.construct(type="IssueTag", id="5-7", name="Review"),
-    ],
+    tags=[IssueTag.construct(type="IssueTag", id="5-7", name="Review")],
     custom_fields=[
         StateIssueCustomField.construct(
             id="110-50",
@@ -471,4 +474,68 @@ TEST_CUSTOM_ISSUE_2 = CustomIssue.construct(
             ),
         ),
     ],
+)
+
+TEST_AGILE = Agile.construct(
+    type="Agile",
+    id="120-8",
+    name="Kanban",
+    owner=User.construct(
+        type="User",
+        id="1-17",
+        name="Max Demo",
+        ring_id="c5d08431-dd52-4cdd-9911-7ec3a18ad117",
+        login="max.demo",
+        email="max@example.com",
+    ),
+    visible_for=UserGroup.construct(
+        type="UserGroup",
+        id="3-20",
+        name="Registered Users",
+        ring_id="38012ba2-2b67-4ca3-a72b-523408d85b6d",
+    ),
+    projects=[
+        Project.construct(
+            type="Project",
+            id="0-13",
+            name="Kanban",
+            short_name="KANBAN",
+        ),
+    ],
+    sprints=[
+        SprintRef.construct(
+            type="Sprint",
+            id="121-8",
+            name="Week 1",
+        ),
+        SprintRef.construct(
+            type="Sprint",
+            id="121-11",
+            name="Week 2",
+        ),
+    ],
+    current_sprint=SprintRef.construct(
+        type="Sprint",
+        id="121-11",
+        name="Week 2",
+    ),
+)
+
+TEST_SPRINT = Sprint.construct(
+    type="Sprint",
+    id="121-8",
+    name="Week 1",
+    goal=None,
+    start=datetime(2023, 1, 29, 0, 0, tzinfo=timezone.utc),
+    finish=datetime(2023, 2, 4, 23, 59, 59, 999000, tzinfo=timezone.utc),
+    archived=False,
+    is_default=False,
+    unresolved_issues_count=0,
+    agile=AgileRef.construct(
+        type="Agile",
+        id="120-8",
+        name="Kanban",
+    ),
+    issues=[],
+    previous_sprint=None,
 )
