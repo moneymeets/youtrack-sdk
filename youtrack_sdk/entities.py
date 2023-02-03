@@ -327,3 +327,35 @@ class IssueLink(BaseModel):
     link_type: Optional[IssueLinkType] = Field(alias="linkType")
     issues: Optional[Sequence[Issue]]
     trimmed_issues: Optional[Sequence[Issue]] = Field(alias="trimmedIssues")
+
+
+class AgileRef(BaseModel):
+    type: Literal["Agile"] = Field(alias="$type", default="Agile")
+    id: Optional[str]
+    name: Optional[str]
+
+
+class SprintRef(BaseModel):
+    type: Literal["Sprint"] = Field(alias="$type", default="Sprint")
+    id: Optional[str]
+    name: Optional[str]
+
+
+class Agile(AgileRef):
+    owner: Optional[User]
+    visible_for: Optional[UserGroup] = Field(alias="visibleFor")
+    projects: Optional[Sequence[Project]]
+    sprints: Optional[Sequence[SprintRef]]
+    current_sprint: Optional[SprintRef] = Field(alias="currentSprint")
+
+
+class Sprint(SprintRef):
+    agile: Optional[AgileRef]
+    goal: Optional[str]
+    start: Optional[datetime]
+    finish: Optional[datetime]
+    archived: Optional[bool]
+    is_default: Optional[bool] = Field(alias="isDefault")
+    issues: Optional[Sequence[Issue]]
+    unresolved_issues_count: Optional[int] = Field(alias="unresolvedIssuesCount")
+    previous_sprint: Optional[SprintRef] = Field(alias="previousSprint")

@@ -1,0 +1,44 @@
+{
+  "owner": {
+    "email": "max@example.com",
+    "login": "max.demo",
+    "ringId": "c5d08431-dd52-4cdd-9911-7ec3a18ad117",
+    "name": "Max Demo",
+    "id": "1-17",
+    "$type": "User"
+  },
+  "projects": [
+    {
+      "shortName": "KANBAN",
+      "name": "Kanban",
+      "id": "0-13",
+      "$type": "Project"
+    }
+  ],
+  "currentSprint": {
+    "name": "Week 2",
+    "id": "121-11",
+    "$type": "Sprint"
+  },
+  "sprints": [
+    {
+      "name": "Week 1",
+      "id": "121-8",
+      "$type": "Sprint"
+    },
+    {
+      "name": "Week 2",
+      "id": "121-11",
+      "$type": "Sprint"
+    }
+  ],
+  "visibleFor": {
+    "ringId": "38012ba2-2b67-4ca3-a72b-523408d85b6d",
+    "name": "Registered Users",
+    "id": "3-20",
+    "$type": "UserGroup"
+  },
+  "name": "Kanban",
+  "id": "120-8",
+  "$type": "Agile"
+}
