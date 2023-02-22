@@ -26,8 +26,15 @@ T = TypeVar("T", bound=BaseModel)
 
 
 class Client:
-    def __init__(self, *, base_url: str, token: str):
+    def __init__(self, *, base_url: str, token: str, timeout: Optional[float | tuple[float, float]] = None):
+        """
+        :param base_url: YouTrack instance URL (e.g. https://example.com/youtrack)
+        :param token: Permanent YouTrack token
+        :param timeout: (optional) How long to wait for the server to send data before giving up,
+            as a float, or a (connect timeout, read timeout) tuple
+        """
         self._base_url = base_url
+        self._timeout = timeout
         self._session = Session()
         self._session.headers.update(
             {
@@ -73,6 +80,7 @@ class Client:
             data=data and obj_to_json(data),
             files=files,
             headers=data and {"Content-Type": "application/json"},
+            timeout=self._timeout,
         )
 
         if response.status_code == HTTPStatus.NOT_FOUND:

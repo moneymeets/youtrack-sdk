@@ -2,9 +2,12 @@ from datetime import datetime, timezone
 from functools import wraps
 from pathlib import Path
 from unittest import TestCase
+from unittest.mock import ANY, patch
 
 import requests_mock
+from requests import ConnectTimeout
 
+import youtrack_sdk.client
 from youtrack_sdk.client import Client
 from youtrack_sdk.entities import (
     Issue,
@@ -40,6 +43,13 @@ def mock_response(url: str, response_name: str, method: str = "GET"):
 class TestClient(TestCase):
     def setUp(self):
         self.client = Client(base_url="https://server", token="test")
+
+    @patch.object(youtrack_sdk.client.Session, "request", side_effect=ConnectTimeout)
+    def test_client_timeout(self, mock_request):
+        client = Client(base_url="https://server", token="test", timeout=123)
+        with self.assertRaises(ConnectTimeout):
+            client.get_issue(issue_id="1")
+        mock_request.assert_called_once_with(method="GET", url=ANY, data=None, files=None, headers=None, timeout=123)
 
     @mock_response(url="https://server/api/issues/1", response_name="issue")
     def test_get_issue(self):
