@@ -1,4 +1,4 @@
-from http import HTTPStatus
+from http import HTTPMethod, HTTPStatus
 from json import JSONDecodeError
 from typing import IO, Optional, Sequence, Type, TypeVar
 from urllib.parse import urlencode
@@ -71,7 +71,7 @@ class Client:
     def _send_request(
         self,
         *,
-        method: str,
+        method: HTTPMethod,
         url: str,
         data: Optional[BaseModel] = None,
         files: Optional[dict[str, IO]] = None,
@@ -110,7 +110,7 @@ class Client:
             ) from e
 
     def _get(self, *, url: str) -> Optional[dict]:
-        return self._send_request(method="GET", url=url)
+        return self._send_request(method=HTTPMethod.GET, url=url)
 
     def _post(
         self,
@@ -120,14 +120,14 @@ class Client:
         files: Optional[dict[str, IO]] = None,
     ) -> Optional[dict]:
         return self._send_request(
-            method="POST",
+            method=HTTPMethod.POST,
             url=url,
             data=data,
             files=files,
         )
 
     def _delete(self, *, url: str) -> Optional[dict]:
-        return self._send_request(method="DELETE", url=url)
+        return self._send_request(method=HTTPMethod.DELETE, url=url)
 
     def get_issue(self, *, issue_id: str) -> Issue:
         """Read an issue with specific ID.

@@ -1,5 +1,5 @@
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 
 from pydantic.datetime_parse import from_unix_seconds
 
@@ -27,7 +27,7 @@ class DateTime(datetime):
         return from_unix_seconds(value)
 
 
-class IssueLinkDirection(Enum):
+class IssueLinkDirection(StrEnum):
     OUTWARD = "s"
     INWARD = "t"
     BOTH = ""
