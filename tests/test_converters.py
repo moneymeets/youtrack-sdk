@@ -1,5 +1,5 @@
 import json
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from typing import Literal, Optional, Sequence
 from unittest import TestCase
 
@@ -104,7 +104,7 @@ class TestDatesToTimestamp(TestCase):
                 custom_json_dumps(
                     {
                         "some_value": 10,
-                        "datetime_value": datetime(2021, 2, 9, 14, 3, 11, tzinfo=timezone.utc),
+                        "datetime_value": datetime(2021, 2, 9, 14, 3, 11, tzinfo=UTC),
                         "date_value": date(2022, 2, 17),
                     },
                 ),
@@ -130,7 +130,7 @@ class TestDatesToTimestamp(TestCase):
                         "str_value": "some text",
                         "nested_dict": {
                             "int_value": 12,
-                            "datetime_value": datetime(2021, 2, 9, 14, 3, 11, tzinfo=timezone.utc),
+                            "datetime_value": datetime(2021, 2, 9, 14, 3, 11, tzinfo=UTC),
                             "enclosed_dict": {
                                 "none_value": None,
                                 "date_value": date(2022, 2, 17),
@@ -167,7 +167,7 @@ class TestDatesToTimestamp(TestCase):
                         "list_value": [
                             {
                                 "int_value": 12,
-                                "datetime_value": datetime(2021, 2, 9, 14, 3, 11, tzinfo=timezone.utc),
+                                "datetime_value": datetime(2021, 2, 9, 14, 3, 11, tzinfo=UTC),
                             },
                             {
                                 "nested_tuple_value": (

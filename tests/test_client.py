@@ -1,5 +1,6 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from functools import wraps
+from http import HTTPMethod
 from pathlib import Path
 from unittest import TestCase
 from unittest.mock import ANY, patch
@@ -35,7 +36,7 @@ from .test_definitions import (
 )
 
 
-def mock_response(url: str, response_name: str, method: str = "GET"):
+def mock_response(url: str, response_name: str, method: HTTPMethod = HTTPMethod.GET):
     def wrapper(func):
         @wraps(func)
         @requests_mock.Mocker()
@@ -61,7 +62,14 @@ class TestClient(TestCase):
         client = Client(base_url="https://server", token="test", timeout=123)
         with self.assertRaises(ConnectTimeout):
             client.get_issue(issue_id="1")
-        mock_request.assert_called_once_with(method="GET", url=ANY, data=None, files=None, headers=None, timeout=123)
+        mock_request.assert_called_once_with(
+            method=HTTPMethod.GET,
+            url=ANY,
+            data=None,
+            files=None,
+            headers=None,
+            timeout=123,
+        )
 
     @mock_response(url="https://server/api/issues/1", response_name="issue")
     def test_get_issue(self):
@@ -93,7 +101,7 @@ class TestClient(TestCase):
                     id="4-296",
                     text="*Hello*, world!",
                     text_preview="<strong>Hello</strong>, world!",
-                    created=datetime(2021, 12, 14, 11, 17, 48, tzinfo=timezone.utc),
+                    created=datetime(2021, 12, 14, 11, 17, 48, tzinfo=UTC),
                     updated=None,
                     author=User.construct(
                         type="User",
@@ -110,8 +118,8 @@ class TestClient(TestCase):
                     id="4-443",
                     text="Sample _comment_",
                     text_preview="Sample <em>comment</em>",
-                    created=datetime(2021, 12, 15, 12, 51, 40, tzinfo=timezone.utc),
-                    updated=datetime(2021, 12, 15, 13, 8, 20, tzinfo=timezone.utc),
+                    created=datetime(2021, 12, 15, 12, 51, 40, tzinfo=UTC),
+                    updated=datetime(2021, 12, 15, 13, 8, 20, tzinfo=UTC),
                     author=User.construct(
                         type="User",
                         id="1-17",
@@ -127,7 +135,7 @@ class TestClient(TestCase):
                     id="4-678",
                     text="Comment with attachments",
                     text_preview="One attachment",
-                    created=datetime(2021, 12, 21, 16, 41, 33, tzinfo=timezone.utc),
+                    created=datetime(2021, 12, 21, 16, 41, 33, tzinfo=UTC),
                     updated=None,
                     author=User.construct(
                         type="User",
@@ -140,8 +148,8 @@ class TestClient(TestCase):
                         IssueAttachment.construct(
                             id="8-312",
                             type="IssueAttachment",
-                            created=datetime(2021, 12, 21, 16, 41, 33, tzinfo=timezone.utc),
-                            updated=datetime(2021, 12, 21, 16, 41, 35, tzinfo=timezone.utc),
+                            created=datetime(2021, 12, 21, 16, 41, 33, tzinfo=UTC),
+                            updated=datetime(2021, 12, 21, 16, 41, 35, tzinfo=UTC),
                             author=None,
                             url="/attachments/url",
                             mime_type="text/plain",
@@ -376,9 +384,9 @@ class TestClient(TestCase):
                             type="Issue",
                             id="2-46619",
                             id_readable="PT-1839",
-                            created=datetime(2022, 9, 26, 13, 50, 12, 810000, tzinfo=timezone.utc),
-                            updated=datetime(2022, 10, 5, 6, 28, 57, 291000, tzinfo=timezone.utc),
-                            resolved=datetime(2022, 9, 26, 13, 51, 29, 671000, tzinfo=timezone.utc),
+                            created=datetime(2022, 9, 26, 13, 50, 12, 810000, tzinfo=UTC),
+                            updated=datetime(2022, 10, 5, 6, 28, 57, 291000, tzinfo=UTC),
+                            resolved=datetime(2022, 9, 26, 13, 51, 29, 671000, tzinfo=UTC),
                             project=Project.construct(
                                 type="Project",
                                 id="0-4",
@@ -414,9 +422,9 @@ class TestClient(TestCase):
                             type="Issue",
                             id="2-46619",
                             id_readable="PT-1840",
-                            created=datetime(2022, 9, 26, 13, 50, 12, 810000, tzinfo=timezone.utc),
-                            updated=datetime(2022, 10, 5, 6, 28, 57, 291000, tzinfo=timezone.utc),
-                            resolved=datetime(2022, 9, 26, 13, 51, 29, 671000, tzinfo=timezone.utc),
+                            created=datetime(2022, 9, 26, 13, 50, 12, 810000, tzinfo=UTC),
+                            updated=datetime(2022, 10, 5, 6, 28, 57, 291000, tzinfo=UTC),
+                            resolved=datetime(2022, 9, 26, 13, 51, 29, 671000, tzinfo=UTC),
                             project=Project.construct(
                                 type="Project",
                                 id="0-4",
@@ -509,14 +517,14 @@ class TestClient(TestCase):
             self.client.get_issue_links(issue_id="1"),
         )
 
-    @mock_response(url="https://server/api/issues/1", response_name="issue", method="POST")
+    @mock_response(url="https://server/api/issues/1", response_name="issue", method=HTTPMethod.POST)
     def test_update_issue(self):
         self.assertEqual(
             TEST_ISSUE,
             self.client.update_issue(issue_id="1", issue=TEST_ISSUE),
         )
 
-    @mock_response(url="https://server/api/agiles", response_name="agiles", method="GET")
+    @mock_response(url="https://server/api/agiles", response_name="agiles", method=HTTPMethod.GET)
     def test_get_agiles(self):
         self.assertEqual(
             (
@@ -559,14 +567,14 @@ class TestClient(TestCase):
             self.client.get_agiles(),
         )
 
-    @mock_response(url="https://server/api/agiles/120-8", response_name="agile", method="GET")
+    @mock_response(url="https://server/api/agiles/120-8", response_name="agile", method=HTTPMethod.GET)
     def test_get_agile(self):
         self.assertEqual(
             TEST_AGILE,
             self.client.get_agile(agile_id="120-8"),
         )
 
-    @mock_response(url="https://server/api/agiles/120-8/sprints", response_name="sprints", method="GET")
+    @mock_response(url="https://server/api/agiles/120-8/sprints", response_name="sprints", method=HTTPMethod.GET)
     def test_get_sprints(self):
         self.assertEqual(
             (
@@ -576,8 +584,8 @@ class TestClient(TestCase):
                     id="121-11",
                     name="Week 2",
                     goal="Finish everything",
-                    start=datetime(2023, 2, 5, 0, 0, tzinfo=timezone.utc),
-                    finish=datetime(2023, 2, 18, 23, 59, 59, 999000, tzinfo=timezone.utc),
+                    start=datetime(2023, 2, 5, 0, 0, tzinfo=UTC),
+                    finish=datetime(2023, 2, 18, 23, 59, 59, 999000, tzinfo=UTC),
                     archived=False,
                     is_default=False,
                     unresolved_issues_count=0,
@@ -593,7 +601,7 @@ class TestClient(TestCase):
             self.client.get_sprints(agile_id="120-8"),
         )
 
-    @mock_response(url="https://server/api/agiles/120-8/sprints/121-8", response_name="sprint", method="GET")
+    @mock_response(url="https://server/api/agiles/120-8/sprints/121-8", response_name="sprint", method=HTTPMethod.GET)
     def test_get_sprint(self):
         self.assertEqual(
             TEST_SPRINT,

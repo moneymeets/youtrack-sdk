@@ -1,4 +1,4 @@
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from typing import Literal, Optional, Sequence
 
 from pydantic import Field
@@ -45,8 +45,8 @@ TEST_ISSUE = Issue.construct(
     type="Issue",
     id="1-937",
     id_readable="HD-25",
-    created=datetime(2021, 2, 9, 14, 3, 11, tzinfo=timezone.utc),
-    updated=datetime(2021, 8, 22, 10, 28, 16, tzinfo=timezone.utc),
+    created=datetime(2021, 2, 9, 14, 3, 11, tzinfo=UTC),
+    updated=datetime(2021, 8, 22, 10, 28, 16, tzinfo=UTC),
     resolved=None,
     project=Project.construct(
         type="Project",
@@ -147,7 +147,7 @@ TEST_ISSUE = Issue.construct(
             id="145-35",
             name="Started at",
             type="SimpleIssueCustomField",
-            value=datetime(2021, 6, 11, 7, 32, 9, tzinfo=timezone.utc),
+            value=datetime(2021, 6, 11, 7, 32, 9, tzinfo=UTC),
             project_custom_field=SimpleProjectCustomField.construct(
                 field=CustomField.construct(
                     type="CustomField",
@@ -218,9 +218,9 @@ TEST_ISSUE_2 = Issue.construct(
     type="Issue",
     id="2-48",
     id_readable="HD-17",
-    created=datetime(2022, 10, 26, 9, 44, 44, tzinfo=timezone.utc),
-    updated=datetime(2022, 10, 27, 16, 46, 11, tzinfo=timezone.utc),
-    resolved=datetime(2022, 10, 30, 18, 1, 55, tzinfo=timezone.utc),
+    created=datetime(2022, 10, 26, 9, 44, 44, tzinfo=UTC),
+    updated=datetime(2022, 10, 27, 16, 46, 11, tzinfo=UTC),
+    resolved=datetime(2022, 10, 30, 18, 1, 55, tzinfo=UTC),
     project=Project.construct(
         type="Project",
         id="0-1",
@@ -313,7 +313,7 @@ TEST_ISSUE_2 = Issue.construct(
             id="145-35",
             name="Started at",
             type="SimpleIssueCustomField",
-            value=datetime(2022, 10, 26, 19, 21, 4, tzinfo=timezone.utc),
+            value=datetime(2022, 10, 26, 19, 21, 4, tzinfo=UTC),
             project_custom_field=SimpleProjectCustomField.construct(
                 field=CustomField.construct(
                     type="CustomField",
@@ -383,8 +383,8 @@ TEST_ISSUE_2 = Issue.construct(
 TEST_CUSTOM_ISSUE = CustomIssue.construct(
     type="Issue",
     id_readable="HD-25",
-    created=datetime(2021, 2, 9, 14, 3, 11, tzinfo=timezone.utc),
-    updated=datetime(2021, 8, 22, 10, 28, 16, tzinfo=timezone.utc),
+    created=datetime(2021, 2, 9, 14, 3, 11, tzinfo=UTC),
+    updated=datetime(2021, 8, 22, 10, 28, 16, tzinfo=UTC),
     resolved=None,
     comments_count=7,
     custom_fields=[
@@ -431,9 +431,9 @@ TEST_CUSTOM_ISSUE = CustomIssue.construct(
 TEST_CUSTOM_ISSUE_2 = CustomIssue.construct(
     type="Issue",
     id_readable="HD-17",
-    created=datetime(2022, 10, 26, 9, 44, 44, tzinfo=timezone.utc),
-    updated=datetime(2022, 10, 27, 16, 46, 11, tzinfo=timezone.utc),
-    resolved=datetime(2022, 10, 30, 18, 1, 55, tzinfo=timezone.utc),
+    created=datetime(2022, 10, 26, 9, 44, 44, tzinfo=UTC),
+    updated=datetime(2022, 10, 27, 16, 46, 11, tzinfo=UTC),
+    resolved=datetime(2022, 10, 30, 18, 1, 55, tzinfo=UTC),
     comments_count=0,
     custom_fields=[
         StateIssueCustomField.construct(
@@ -526,8 +526,8 @@ TEST_SPRINT = Sprint.construct(
     id="121-8",
     name="Week 1",
     goal=None,
-    start=datetime(2023, 1, 29, 0, 0, tzinfo=timezone.utc),
-    finish=datetime(2023, 2, 4, 23, 59, 59, 999000, tzinfo=timezone.utc),
+    start=datetime(2023, 1, 29, 0, 0, tzinfo=UTC),
+    finish=datetime(2023, 2, 4, 23, 59, 59, 999000, tzinfo=UTC),
     archived=False,
     is_default=False,
     unresolved_issues_count=0,

@@ -1,6 +1,6 @@
 import json
 from copy import deepcopy
-from datetime import date, datetime, time, timezone
+from datetime import UTC, date, datetime, time
 from itertools import starmap
 from typing import Any, Optional, Type, Union, get_args
 
@@ -103,7 +103,7 @@ class YouTrackTimestampEncoder(json.JSONEncoder):
             case datetime():
                 return to_youtrack_timestamp(obj)
             case date():
-                return to_youtrack_timestamp(datetime.combine(obj, time(hour=12, tzinfo=timezone.utc)))
+                return to_youtrack_timestamp(datetime.combine(obj, time(hour=12, tzinfo=UTC)))
             case _:
                 return json.JSONEncoder.default(self, obj)
 
