@@ -17,7 +17,7 @@
       {
         "name": "Review",
         "id": "5-7",
-        "$type": "IssueTag"
+        "$type": "Tag"
       }
     ],
     "reporter": {

@@ -260,8 +260,8 @@ class Project(BaseModel):
     short_name: Optional[str] = Field(alias="shortName")
 
 
-class IssueTag(BaseModel):
-    type: Literal["IssueTag"] = Field(alias="$type", default="IssueTag")
+class Tag(BaseModel):
+    type: Literal["Tag"] = Field(alias="$type", default="Tag")
     id: Optional[str]
     name: Optional[str]
 
@@ -280,7 +280,7 @@ class Issue(BaseModel):
     description: Optional[str]
     wikified_description: Optional[str] = Field(alias="wikifiedDescription")
     comments_count: Optional[int] = Field(alias="commentsCount")
-    tags: Optional[Sequence[IssueTag]]
+    tags: Optional[Sequence[Tag]]
     custom_fields: Optional[Sequence[IssueCustomFieldType]] = Field(alias="customFields")
 
 

@@ -14,7 +14,6 @@ from youtrack_sdk.entities import (
     FieldType,
     Issue,
     IssueCustomFieldType,
-    IssueTag,
     Project,
     SimpleIssueCustomField,
     SimpleProjectCustomField,
@@ -25,6 +24,7 @@ from youtrack_sdk.entities import (
     StateBundleElement,
     StateIssueCustomField,
     StateProjectCustomField,
+    Tag,
     User,
     UserGroup,
     UserProjectCustomField,
@@ -72,7 +72,7 @@ TEST_ISSUE = Issue.construct(
     description="Issue description",
     wikified_description="Wikified issue description",
     comments_count=7,
-    tags=[IssueTag.construct(type="IssueTag", id="5-7", name="Review")],
+    tags=[Tag.construct(type="Tag", id="5-7", name="Review")],
     custom_fields=[
         StateIssueCustomField.construct(
             id="110-50",

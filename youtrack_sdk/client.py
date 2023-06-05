@@ -15,9 +15,9 @@ from .entities import (
     IssueCustomFieldType,
     IssueLink,
     IssueLinkType,
-    IssueTag,
     Project,
     Sprint,
+    Tag,
     User,
 )
 from .exceptions import YouTrackException, YouTrackNotFound, YouTrackUnauthorized
@@ -386,24 +386,28 @@ class Client:
             ),
         )
 
-    def get_tags(self, offset: int = 0, count: int = -1) -> Sequence[IssueTag]:
+    def get_tags(self, offset: int = 0, count: int = -1) -> Sequence[Tag]:
         """Get all tags that are visible to the current user.
 
-        https://www.jetbrains.com/help/youtrack/devportal/resource-api-issueTags.html#get_all-IssueTag-method
+        https://www.jetbrains.com/help/youtrack/devportal/resource-api-tags.html#get_all-Tag-method
         """
         return parse_obj_as(
-            tuple[IssueTag, ...],
+            tuple[Tag, ...],
             self._get(
                 url=self._build_url(
-                    path="/issueTags",
-                    fields=model_to_field_names(IssueTag),
+                    path="/tags",
+                    fields=model_to_field_names(Tag),
                     offset=offset,
                     count=count,
                 ),
             ),
         )
 
-    def add_issue_tag(self, *, issue_id: str, tag: IssueTag):
+    def add_issue_tag(self, *, issue_id: str, tag: Tag):
+        """Tag the issue with an existing tag.
+
+        https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-tags.html#create-Tag-method
+        """
         self._post(
             url=self._build_url(
                 path=f"/issues/{issue_id}/tags",
