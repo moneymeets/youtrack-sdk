@@ -18,10 +18,10 @@ from youtrack_sdk.entities import (
     IssueComment,
     IssueLink,
     IssueLinkType,
-    IssueTag,
     Project,
     Sprint,
     SprintRef,
+    Tag,
     User,
 )
 
@@ -182,22 +182,22 @@ class TestClient(TestCase):
             self.client.get_projects(),
         )
 
-    @mock_response(url="https://server/api/issueTags", response_name="tags")
+    @mock_response(url="https://server/api/tags", response_name="tags")
     def test_get_tags(self):
         self.assertEqual(
             (
-                IssueTag.construct(
-                    type="IssueTag",
+                Tag.construct(
+                    type="Tag",
                     id="6-0",
                     name="productivity",
                 ),
-                IssueTag.construct(
-                    type="IssueTag",
+                Tag.construct(
+                    type="Tag",
                     id="6-1",
                     name="tip",
                 ),
-                IssueTag.construct(
-                    type="IssueTag",
+                Tag.construct(
+                    type="Tag",
                     id="6-5",
                     name="Star",
                 ),

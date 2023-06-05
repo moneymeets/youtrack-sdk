@@ -11,7 +11,7 @@ from youtrack_sdk.entities import (
     DateIssueCustomField,
     EnumBundleElement,
     Issue,
-    IssueTag,
+    Tag,
     Project,
     SingleEnumIssueCustomField,
     SingleUserIssueCustomField,
@@ -27,7 +27,7 @@ result = client.create_issue(
         summary="Created from YouTrack SDK",
         description="Description **text**.",
         tags=[
-            IssueTag(id="6-0"),
+            Tag(id="6-0"),
         ],
         custom_fields=[
             StateIssueCustomField(
