@@ -4,7 +4,7 @@ from datetime import UTC, date, datetime, time
 from itertools import starmap
 from typing import Any, Optional, Type, Union, get_args
 
-from pydantic import BaseModel
+from pydantic.v1 import BaseModel
 
 
 def deep_update(dest: dict, *mappings: dict) -> dict:

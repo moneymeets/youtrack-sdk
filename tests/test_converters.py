@@ -3,7 +3,7 @@ from datetime import UTC, date, datetime
 from typing import Literal, Optional, Sequence
 from unittest import TestCase
 
-from pydantic import Field
+from pydantic.v1 import Field
 
 from youtrack_sdk.entities import BaseModel
 from youtrack_sdk.helpers import custom_json_dumps, obj_to_dict

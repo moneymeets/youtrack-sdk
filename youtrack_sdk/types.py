@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import StrEnum
 
-from pydantic.datetime_parse import from_unix_seconds
+from pydantic.v1.datetime_parse import from_unix_seconds
 
 from .exceptions import IncompatibleFieldTypeError, StrictIntError
 

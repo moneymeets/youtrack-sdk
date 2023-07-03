@@ -1,7 +1,7 @@
 from datetime import UTC, date, datetime
 from typing import Literal, Optional, Sequence
 
-from pydantic import Field
+from pydantic.v1 import Field
 
 from youtrack_sdk.entities import (
     Agile,
