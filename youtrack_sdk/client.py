@@ -3,7 +3,7 @@ from json import JSONDecodeError
 from typing import IO, Optional, Sequence, Type, TypeVar
 from urllib.parse import urlencode
 
-from pydantic import parse_obj_as
+from pydantic.v1 import parse_obj_as
 from requests import HTTPError, Session
 
 from .entities import (

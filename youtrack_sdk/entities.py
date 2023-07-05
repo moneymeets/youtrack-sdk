@@ -1,8 +1,8 @@
 from datetime import date, datetime
 from typing import Literal, Optional, Sequence
 
-from pydantic import BaseModel as PydanticBaseModel
-from pydantic import Field, StrictFloat, StrictInt, StrictStr
+from pydantic.v1 import BaseModel as PydanticBaseModel
+from pydantic.v1 import Field, StrictFloat, StrictInt, StrictStr
 
 from .types import DateTime
 

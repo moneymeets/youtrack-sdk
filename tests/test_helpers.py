@@ -1,7 +1,7 @@
 from typing import Literal, Optional, Sequence, Union
 from unittest import TestCase
 
-from pydantic import Field
+from pydantic.v1 import Field
 
 from youtrack_sdk.entities import BaseModel
 from youtrack_sdk.helpers import model_to_field_names
