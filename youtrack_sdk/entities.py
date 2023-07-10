@@ -1,44 +1,45 @@
-from datetime import date, datetime
 from typing import Literal, Optional, Sequence
 
-from pydantic.v1 import BaseModel as PydanticBaseModel
-from pydantic.v1 import Field, StrictFloat, StrictInt, StrictStr
+from pydantic import AwareDatetime
+from pydantic import BaseModel as PydanticBaseModel
+from pydantic import ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 
-from .types import DateTime
+from .types import YouTrackDate, validate_youtrack_datetime
 
 
 class BaseModel(PydanticBaseModel):
-    class Config:
-        allow_population_by_field_name = True  # allow to use field name or alias to populate a model
-        frozen = True  # make instance immutable and hashable
+    model_config = ConfigDict(
+        populate_by_name=True,  # allow to use field name or alias to populate a model
+        frozen=True,  # make instance immutable and hashable
+    )
 
 
 class User(BaseModel):
     type: Literal["User", "Me"] = Field(alias="$type", default="User")
-    id: Optional[str]
-    name: Optional[str]
-    ring_id: Optional[str] = Field(alias="ringId")
-    login: Optional[str]
-    email: Optional[str]
+    id: Optional[str] = None
+    name: Optional[str] = None
+    ring_id: Optional[str] = Field(alias="ringId", default=None)
+    login: Optional[str] = None
+    email: Optional[str] = None
 
 
 class TextFieldValue(BaseModel):
     type: Literal["TextFieldValue"] = Field(alias="$type", default="TextFieldValue")
-    id: Optional[str]
-    text: Optional[str]
-    markdownText: Optional[str]
+    id: Optional[str] = None
+    text: Optional[str] = None
+    markdownText: Optional[str] = None
 
 
 class PeriodValue(BaseModel):
     type: Literal["PeriodValue"] = Field(alias="$type", default="PeriodValue")
-    id: Optional[str]
-    minutes: Optional[int]
-    presentation: Optional[str]
+    id: Optional[str] = None
+    minutes: Optional[int] = None
+    presentation: Optional[str] = None
 
 
 class BundleElement(BaseModel):
-    id: Optional[str]
-    name: Optional[str]
+    id: Optional[str] = None
+    name: Optional[str] = None
 
 
 class BuildBundleElement(BundleElement):
@@ -63,23 +64,23 @@ class StateBundleElement(BundleElement):
 
 class UserGroup(BaseModel):
     type: Literal["UserGroup"] = Field(alias="$type", default="UserGroup")
-    id: Optional[str]
-    name: Optional[str]
-    ring_id: Optional[str] = Field(alias="ringId")
+    id: Optional[str] = None
+    name: Optional[str] = None
+    ring_id: Optional[str] = Field(alias="ringId", default=None)
 
 
 class FieldType(BaseModel):
     type: Literal["FieldType"] = Field(alias="$type", default="FieldType")
-    id: Optional[str]
+    id: Optional[str] = None
 
 
 class CustomField(BaseModel):
     type: Literal["CustomField"] = Field(alias="$type", default="CustomField")
-    field_type: Optional[FieldType] = Field(alias="fieldType")
+    field_type: Optional[FieldType] = Field(alias="fieldType", default=None)
 
 
 class ProjectCustomField(BaseModel):
-    field: Optional[CustomField]
+    field: Optional[CustomField] = None
 
 
 class GroupProjectCustomField(ProjectCustomField):
@@ -142,29 +143,30 @@ ProjectCustomFieldType = (
 
 
 class IssueCustomField(BaseModel):
-    id: Optional[str]
-    name: Optional[str]
-    project_custom_field: Optional[ProjectCustomFieldType] = Field(alias="projectCustomField")
+    id: Optional[str] = None
+    name: Optional[str] = None
+    project_custom_field: Optional[ProjectCustomFieldType] = Field(alias="projectCustomField", default=None)
 
 
 class TextIssueCustomField(IssueCustomField):
     type: Literal["TextIssueCustomField"] = Field(alias="$type", default="TextIssueCustomField")
-    value: Optional[TextFieldValue]
+    value: Optional[TextFieldValue] = None
 
 
 class SimpleIssueCustomField(IssueCustomField):
     type: Literal["SimpleIssueCustomField"] = Field(alias="$type", default="SimpleIssueCustomField")
-    value: Optional[DateTime | StrictStr | StrictInt | StrictFloat]
+    value: Optional[AwareDatetime | StrictStr | StrictInt | StrictFloat] = None
+    validate_value = field_validator("value")(validate_youtrack_datetime)
 
 
 class DateIssueCustomField(SimpleIssueCustomField):
     type: Literal["DateIssueCustomField"] = Field(alias="$type", default="DateIssueCustomField")
-    value: Optional[date]
+    value: Optional[YouTrackDate] = None
 
 
 class PeriodIssueCustomField(IssueCustomField):
     type: Literal["PeriodIssueCustomField"] = Field(alias="$type", default="PeriodIssueCustomField")
-    value: Optional[PeriodValue]
+    value: Optional[PeriodValue] = None
 
 
 class MultiBuildIssueCustomField(IssueCustomField):
@@ -199,37 +201,37 @@ class MultiVersionIssueCustomField(IssueCustomField):
 
 class SingleBuildIssueCustomField(IssueCustomField):
     type: Literal["SingleBuildIssueCustomField"] = Field(alias="$type", default="SingleBuildIssueCustomField")
-    value: Optional[BuildBundleElement]
+    value: Optional[BuildBundleElement] = None
 
 
 class SingleEnumIssueCustomField(IssueCustomField):
     type: Literal["SingleEnumIssueCustomField"] = Field(alias="$type", default="SingleEnumIssueCustomField")
-    value: Optional[EnumBundleElement]
+    value: Optional[EnumBundleElement] = None
 
 
 class SingleGroupIssueCustomField(IssueCustomField):
     type: Literal["SingleGroupIssueCustomField"] = Field(alias="$type", default="SingleGroupIssueCustomField")
-    value: Optional[UserGroup]
+    value: Optional[UserGroup] = None
 
 
 class SingleOwnedIssueCustomField(IssueCustomField):
     type: Literal["SingleOwnedIssueCustomField"] = Field(alias="$type", default="SingleOwnedIssueCustomField")
-    value: Optional[OwnedBundleElement]
+    value: Optional[OwnedBundleElement] = None
 
 
 class SingleUserIssueCustomField(IssueCustomField):
     type: Literal["SingleUserIssueCustomField"] = Field(alias="$type", default="SingleUserIssueCustomField")
-    value: Optional[User]
+    value: Optional[User] = None
 
 
 class SingleVersionIssueCustomField(IssueCustomField):
     type: Literal["SingleVersionIssueCustomField"] = Field(alias="$type", default="SingleVersionIssueCustomField")
-    value: Optional[VersionBundleElement]
+    value: Optional[VersionBundleElement] = None
 
 
 class StateIssueCustomField(IssueCustomField):
     type: Literal["StateIssueCustomField"] = Field(alias="$type", default="StateIssueCustomField")
-    value: Optional[StateBundleElement]
+    value: Optional[StateBundleElement] = None
 
 
 IssueCustomFieldType = (
@@ -255,107 +257,107 @@ IssueCustomFieldType = (
 
 class Project(BaseModel):
     type: Literal["Project"] = Field(alias="$type", default="Project")
-    id: Optional[str]
-    name: Optional[str]
-    short_name: Optional[str] = Field(alias="shortName")
+    id: Optional[str] = None
+    name: Optional[str] = None
+    short_name: Optional[str] = Field(alias="shortName", default=None)
 
 
 class Tag(BaseModel):
     type: Literal["Tag"] = Field(alias="$type", default="Tag")
-    id: Optional[str]
-    name: Optional[str]
+    id: Optional[str] = None
+    name: Optional[str] = None
 
 
 class Issue(BaseModel):
     type: Literal["Issue"] = Field(alias="$type", default="Issue")
-    id: Optional[str]
-    id_readable: Optional[str] = Field(alias="idReadable")
-    created: Optional[datetime]
-    updated: Optional[datetime]
-    resolved: Optional[datetime]
-    project: Optional[Project]
-    reporter: Optional[User]
-    updater: Optional[User]
-    summary: Optional[str]
-    description: Optional[str]
-    wikified_description: Optional[str] = Field(alias="wikifiedDescription")
-    comments_count: Optional[int] = Field(alias="commentsCount")
-    tags: Optional[Sequence[Tag]]
-    custom_fields: Optional[Sequence[IssueCustomFieldType]] = Field(alias="customFields")
+    id: Optional[str] = None
+    id_readable: Optional[str] = Field(alias="idReadable", default=None)
+    created: Optional[AwareDatetime] = None
+    updated: Optional[AwareDatetime] = None
+    resolved: Optional[AwareDatetime] = None
+    project: Optional[Project] = None
+    reporter: Optional[User] = None
+    updater: Optional[User] = None
+    summary: Optional[str] = None
+    description: Optional[str] = None
+    wikified_description: Optional[str] = Field(alias="wikifiedDescription", default=None)
+    comments_count: Optional[int] = Field(alias="commentsCount", default=None)
+    tags: Optional[Sequence[Tag]] = None
+    custom_fields: Optional[Sequence[IssueCustomFieldType]] = Field(alias="customFields", default=None)
 
 
 class IssueAttachment(BaseModel):
     type: Literal["IssueAttachment"] = Field(alias="$type", default="IssueAttachment")
-    id: Optional[str]
-    name: Optional[str]
-    author: Optional[User]
-    created: Optional[datetime]
-    updated: Optional[datetime]
-    mime_type: Optional[str] = Field(alias="mimeType")
-    url: Optional[str]
+    id: Optional[str] = None
+    name: Optional[str] = None
+    author: Optional[User] = None
+    created: Optional[AwareDatetime] = None
+    updated: Optional[AwareDatetime] = None
+    mime_type: Optional[str] = Field(alias="mimeType", default=None)
+    url: Optional[str] = None
 
 
 class IssueComment(BaseModel):
     type: Literal["IssueComment"] = Field(alias="$type", default="IssueComment")
-    id: Optional[str]
-    text: Optional[str]
-    text_preview: Optional[str] = Field(alias="textPreview")
-    created: Optional[datetime]
-    updated: Optional[datetime]
-    author: Optional[User]
-    attachments: Optional[Sequence[IssueAttachment]]
-    deleted: Optional[bool]
+    id: Optional[str] = None
+    text: Optional[str] = None
+    text_preview: Optional[str] = Field(alias="textPreview", default=None)
+    created: Optional[AwareDatetime] = None
+    updated: Optional[AwareDatetime] = None
+    author: Optional[User] = None
+    attachments: Optional[Sequence[IssueAttachment]] = None
+    deleted: Optional[bool] = None
 
 
 class IssueLinkType(BaseModel):
     type: Literal["IssueLinkType"] = Field(alias="$type", default="IssueLinkType")
-    id: Optional[str]
-    name: Optional[str]
-    localized_name: Optional[str] = Field(alias="localizedName")
-    source_to_target: Optional[str] = Field(alias="sourceToTarget")
-    localized_source_to_target: Optional[str] = Field(alias="localizedSourceToTarget")
-    target_to_source: Optional[str] = Field(alias="targetToSource")
-    localized_target_to_source: Optional[str] = Field(alias="localizedTargetToSource")
-    directed: Optional[bool]
-    aggregation: Optional[bool]
-    read_only: Optional[bool] = Field(alias="readOnly")
+    id: Optional[str] = None
+    name: Optional[str] = None
+    localized_name: Optional[str] = Field(alias="localizedName", default=None)
+    source_to_target: Optional[str] = Field(alias="sourceToTarget", default=None)
+    localized_source_to_target: Optional[str] = Field(alias="localizedSourceToTarget", default=None)
+    target_to_source: Optional[str] = Field(alias="targetToSource", default=None)
+    localized_target_to_source: Optional[str] = Field(alias="localizedTargetToSource", default=None)
+    directed: Optional[bool] = None
+    aggregation: Optional[bool] = None
+    read_only: Optional[bool] = Field(alias="readOnly", default=None)
 
 
 class IssueLink(BaseModel):
-    id: Optional[str]
-    direction: Optional[Literal["OUTWARD", "INWARD", "BOTH"]]
-    link_type: Optional[IssueLinkType] = Field(alias="linkType")
-    issues: Optional[Sequence[Issue]]
-    trimmed_issues: Optional[Sequence[Issue]] = Field(alias="trimmedIssues")
+    id: Optional[str] = None
+    direction: Optional[Literal["OUTWARD", "INWARD", "BOTH"]] = None
+    link_type: Optional[IssueLinkType] = Field(alias="linkType", default=None)
+    issues: Optional[Sequence[Issue]] = None
+    trimmed_issues: Optional[Sequence[Issue]] = Field(alias="trimmedIssues", default=None)
 
 
 class AgileRef(BaseModel):
     type: Literal["Agile"] = Field(alias="$type", default="Agile")
-    id: Optional[str]
-    name: Optional[str]
+    id: Optional[str] = None
+    name: Optional[str] = None
 
 
 class SprintRef(BaseModel):
     type: Literal["Sprint"] = Field(alias="$type", default="Sprint")
-    id: Optional[str]
-    name: Optional[str]
+    id: Optional[str] = None
+    name: Optional[str] = None
 
 
 class Agile(AgileRef):
-    owner: Optional[User]
-    visible_for: Optional[UserGroup] = Field(alias="visibleFor")
-    projects: Optional[Sequence[Project]]
-    sprints: Optional[Sequence[SprintRef]]
-    current_sprint: Optional[SprintRef] = Field(alias="currentSprint")
+    owner: Optional[User] = None
+    visible_for: Optional[UserGroup] = Field(alias="visibleFor", default=None)
+    projects: Optional[Sequence[Project]] = None
+    sprints: Optional[Sequence[SprintRef]] = None
+    current_sprint: Optional[SprintRef] = Field(alias="currentSprint", default=None)
 
 
 class Sprint(SprintRef):
-    agile: Optional[AgileRef]
-    goal: Optional[str]
-    start: Optional[datetime]
-    finish: Optional[datetime]
-    archived: Optional[bool]
-    is_default: Optional[bool] = Field(alias="isDefault")
-    issues: Optional[Sequence[Issue]]
-    unresolved_issues_count: Optional[int] = Field(alias="unresolvedIssuesCount")
-    previous_sprint: Optional[SprintRef] = Field(alias="previousSprint")
+    agile: Optional[AgileRef] = None
+    goal: Optional[str] = None
+    start: Optional[AwareDatetime] = None
+    finish: Optional[AwareDatetime] = None
+    archived: Optional[bool] = None
+    is_default: Optional[bool] = Field(alias="isDefault", default=None)
+    issues: Optional[Sequence[Issue]] = None
+    unresolved_issues_count: Optional[int] = Field(alias="unresolvedIssuesCount", default=None)
+    previous_sprint: Optional[SprintRef] = Field(alias="previousSprint", default=None)

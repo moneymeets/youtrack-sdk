@@ -1,30 +1,35 @@
-from datetime import datetime
+from datetime import UTC, date, datetime, timedelta
 from enum import StrEnum
+from typing import Annotated
 
-from pydantic.v1.datetime_parse import from_unix_seconds
+from pydantic import BeforeValidator
+from pydantic_core.core_schema import FieldValidationInfo
 
-from .exceptions import IncompatibleFieldTypeError, StrictIntError
+YouTrackDate = Annotated[
+    date,
+    BeforeValidator(
+        lambda d: (datetime.fromtimestamp(d / 1000, UTC) - timedelta(hours=12)) if isinstance(d, int) else d,
+    ),
+]
 
 
-class DateTime(datetime):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, value, values):
-        if (project_custom_field := values.get("project_custom_field")) and (
-            project_custom_field.field.field_type.id != "date and time"
-        ):
-            raise IncompatibleFieldTypeError
-
+def validate_youtrack_datetime(value, info: FieldValidationInfo):
+    if "project_custom_field" not in info.data:
+        raise RuntimeError("validate_youtrack_datetime can only be used with models having project_custom_field")
+    if (
+        (project_custom_field := info.data["project_custom_field"])
+        and (project_custom_field.field.field_type.id == "date and time")
+        and value is not None
+    ):
         if isinstance(value, datetime):
             return value
 
         if not isinstance(value, int):
-            raise StrictIntError
+            raise ValueError("'date and time' field must be an integer")
 
-        return from_unix_seconds(value)
+        return datetime.fromtimestamp(value / 1000, UTC)
+
+    return value
 
 
 class IssueLinkDirection(StrEnum):

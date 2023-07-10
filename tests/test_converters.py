@@ -3,7 +3,7 @@ from datetime import UTC, date, datetime
 from typing import Literal, Optional, Sequence
 from unittest import TestCase
 
-from pydantic.v1 import Field
+from pydantic import Field
 
 from youtrack_sdk.entities import BaseModel
 from youtrack_sdk.helpers import custom_json_dumps, obj_to_dict
@@ -11,21 +11,21 @@ from youtrack_sdk.helpers import custom_json_dumps, obj_to_dict
 
 class SimpleModel(BaseModel):
     type: Literal["SimpleModel"] = Field(alias="$type", default="SimpleModel")
-    flag: Optional[bool]
-    short_name: Optional[str] = Field(alias="shortName")
-    value: Optional[int]
+    flag: Optional[bool] = None
+    short_name: Optional[str] = Field(alias="shortName", default=None)
+    value: Optional[int] = None
 
 
 class NestedModel(BaseModel):
     type: Literal["NestedModel"] = Field(alias="$type", default="NestedModel")
-    source: Optional[SimpleModel]
-    dest: Optional[SimpleModel]
+    source: Optional[SimpleModel] = None
+    dest: Optional[SimpleModel] = None
 
 
 class NestedSequenceModel(BaseModel):
     type: Literal["NestedSequenceModel"] = Field(alias="$type", default="NestedSequenceModel")
-    items: Optional[Sequence[NestedModel]]
-    stocks: Optional[Sequence[NestedModel]]
+    items: Optional[Sequence[NestedModel]] = None
+    stocks: Optional[Sequence[NestedModel]] = None
 
 
 class TestObjToDict(TestCase):
@@ -41,7 +41,7 @@ class TestObjToDict(TestCase):
                 "shortName": "Demo",
                 "value": None,
             },
-            obj_to_dict(SimpleModel.construct(short_name="Demo", value=None)),
+            obj_to_dict(SimpleModel.model_construct(short_name="Demo", value=None)),
         )
 
     def test_nested_model(self):
@@ -55,8 +55,8 @@ class TestObjToDict(TestCase):
                 },
             },
             obj_to_dict(
-                NestedModel.construct(
-                    source=SimpleModel.construct(short_name="Demo", value=None),
+                NestedModel.model_construct(
+                    source=SimpleModel.model_construct(short_name="Demo", value=None),
                 ),
             ),
         )
@@ -77,12 +77,12 @@ class TestObjToDict(TestCase):
                 ],
             },
             obj_to_dict(
-                NestedSequenceModel.construct(
+                NestedSequenceModel.model_construct(
                     items=[
-                        NestedModel.construct(),
-                        NestedModel.construct(
-                            source=SimpleModel.construct(short_name="Source", value=None),
-                            dest=SimpleModel.construct(short_name="Dest", value=5),
+                        NestedModel.model_construct(),
+                        NestedModel.model_construct(
+                            source=SimpleModel.model_construct(short_name="Source", value=None),
+                            dest=SimpleModel.model_construct(short_name="Dest", value=5),
                         ),
                     ],
                 ),
