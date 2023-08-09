@@ -4,7 +4,7 @@ from datetime import UTC, date, datetime, time
 from itertools import starmap
 from typing import Any, Optional, Type, Union, get_args
 
-from pydantic.v1 import BaseModel
+from pydantic import BaseModel
 
 
 def deep_update(dest: dict, *mappings: dict) -> dict:
@@ -47,8 +47,8 @@ def model_to_field_names(model: Type[BaseModel] | Union[Type[BaseModel]]) -> Opt
     """
 
     def model_to_fields(m: Type[BaseModel]) -> dict:
-        model_schema = m.schema(ref_template="{model}")
-        definitions = model_schema.get("definitions", {})
+        model_schema = m.model_json_schema(ref_template="{model}")
+        definitions = model_schema.get("$defs", {})
 
         def schema_to_fields(schema: dict) -> dict:
             def type_to_fields(field_type: dict) -> dict:
@@ -89,8 +89,8 @@ def obj_to_dict(obj: Optional[BaseModel]) -> Optional[dict]:
     # `exclude_unset=True` on its own is not sufficient, because the default value
     # for $type fields should be used to simplify the creation of request objects.
     return obj and deep_update(
-        obj.dict(by_alias=True, exclude_unset=True),
-        obj.dict(by_alias=True, exclude_none=True),
+        obj.model_dump(by_alias=True, exclude_unset=True),
+        obj.model_dump(by_alias=True, exclude_none=True),
     )
 
 

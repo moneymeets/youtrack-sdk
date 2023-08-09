@@ -3,7 +3,7 @@ from json import JSONDecodeError
 from typing import IO, Optional, Sequence, Type, TypeVar
 from urllib.parse import urlencode
 
-from pydantic.v1 import parse_obj_as
+from pydantic import TypeAdapter
 from requests import HTTPError, Session
 
 from .entities import (
@@ -134,7 +134,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues.html#get-Issue-method
         """
-        return Issue.parse_obj(
+        return Issue.model_validate(
             self._get(
                 url=self._build_url(
                     path=f"/issues/{issue_id}",
@@ -157,8 +157,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues.html#get_all-Issue-method
         """
-        return parse_obj_as(
-            tuple[model, ...],
+        return TypeAdapter(tuple[model, ...]).validate_python(
             self._get(
                 url=self._build_url(
                     path="/issues/",
@@ -176,7 +175,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues.html#create-Issue-method
         """
-        return Issue.parse_obj(
+        return Issue.model_validate(
             self._post(
                 url=self._build_url(
                     path="/issues",
@@ -191,7 +190,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues.html#update-Issue-method
         """
-        return Issue.parse_obj(
+        return Issue.model_validate(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}",
@@ -213,8 +212,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-customFields.html#get_all-IssueCustomField-method
         """
-        return parse_obj_as(
-            tuple[IssueCustomFieldType, ...],
+        return TypeAdapter(tuple[IssueCustomFieldType, ...]).validate_python(
             self._get(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/customFields",
@@ -230,8 +228,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-customFields.html#update-IssueCustomField-method
         """
-        return parse_obj_as(
-            IssueCustomFieldType,
+        return TypeAdapter(IssueCustomFieldType).validate_python(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/customFields/{field.id}",
@@ -257,8 +254,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-comments.html#get_all-IssueComment-method
         """
-        return parse_obj_as(
-            tuple[IssueComment, ...],
+        return TypeAdapter(tuple[IssueComment, ...]).validate_python(
             self._get(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/comments",
@@ -274,7 +270,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-comments.html#create-IssueComment-method
         """
-        return IssueComment.parse_obj(
+        return IssueComment.model_validate(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/comments",
@@ -289,7 +285,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-comments.html#update-IssueComment-method
         """
-        return IssueComment.parse_obj(
+        return IssueComment.model_validate(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/comments/{comment.id}",
@@ -322,8 +318,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-attachments.html#get_all-IssueAttachment-method
         """
-        return parse_obj_as(
-            tuple[IssueAttachment, ...],
+        return TypeAdapter(tuple[IssueAttachment, ...]).validate_python(
             self._get(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/attachments",
@@ -340,8 +335,7 @@ class Client:
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-attachments.html#create-IssueAttachment-method
         https://www.jetbrains.com/help/youtrack/devportal/api-usecase-attach-files.html
         """
-        return parse_obj_as(
-            tuple[IssueAttachment, ...],
+        return TypeAdapter(tuple[IssueAttachment, ...]).validate_python(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/attachments",
@@ -358,8 +352,7 @@ class Client:
         comment_id: str,
         files: dict[str, IO],
     ) -> Sequence[IssueAttachment]:
-        return parse_obj_as(
-            tuple[IssueAttachment, ...],
+        return TypeAdapter(tuple[IssueAttachment, ...]).validate_python(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/comments/{comment_id}/attachments",
@@ -374,8 +367,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-admin-projects.html#get_all-Project-method
         """
-        return parse_obj_as(
-            tuple[Project, ...],
+        return TypeAdapter(tuple[Project, ...]).validate_python(
             self._get(
                 url=self._build_url(
                     path="/admin/projects",
@@ -391,8 +383,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-tags.html#get_all-Tag-method
         """
-        return parse_obj_as(
-            tuple[Tag, ...],
+        return TypeAdapter(tuple[Tag, ...]).validate_python(
             self._get(
                 url=self._build_url(
                     path="/tags",
@@ -420,8 +411,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-users.html#get_all-User-method
         """
-        return parse_obj_as(
-            tuple[User, ...],
+        return TypeAdapter(tuple[User, ...]).validate_python(
             self._get(
                 url=self._build_url(
                     path="/users",
@@ -437,8 +427,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-links.html#get_all-IssueLink-method
         """
-        return parse_obj_as(
-            tuple[IssueLink, ...],
+        return TypeAdapter(tuple[IssueLink, ...]).validate_python(
             self._get(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/links",
@@ -454,8 +443,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issueLinkTypes.html#get_all-IssueLinkType-method
         """
-        return parse_obj_as(
-            tuple[IssueLinkType, ...],
+        return TypeAdapter(tuple[IssueLinkType, ...]).validate_python(
             self._get(
                 url=self._build_url(
                     path="/issueLinkTypes",
@@ -478,8 +466,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-links-linkID-issues.html#create-Issue-method
         """
-        return parse_obj_as(
-            Issue,
+        return TypeAdapter(Issue).validate_python(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{source_issue_id}/links/{link_type_id}{link_direction.value}/issues",
@@ -511,8 +498,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-agiles.html#get_all-Agile-method
         """
-        return parse_obj_as(
-            tuple[Agile, ...],
+        return TypeAdapter(tuple[Agile, ...]).validate_python(
             self._get(
                 url=self._build_url(
                     path="/agiles",
@@ -528,7 +514,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-agiles.html#get-Agile-method
         """
-        return Agile.parse_obj(
+        return Agile.model_validate(
             self._get(
                 url=self._build_url(
                     path=f"/agiles/{agile_id}",
@@ -542,8 +528,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-agiles-agileID-sprints.html#get_all-Sprint-method
         """
-        return parse_obj_as(
-            tuple[Sprint, ...],
+        return TypeAdapter(tuple[Sprint, ...]).validate_python(
             self._get(
                 url=self._build_url(
                     path=f"/agiles/{agile_id}/sprints",
@@ -559,7 +544,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-agiles-agileID-sprints.html#get-Sprint-method
         """
-        return Sprint.parse_obj(
+        return Sprint.model_validate(
             self._get(
                 url=self._build_url(
                     path=f"/agiles/{agile_id}/sprints/{sprint_id}",

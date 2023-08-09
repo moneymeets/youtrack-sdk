@@ -1,7 +1,7 @@
 from typing import Literal, Optional, Sequence, Union
 from unittest import TestCase
 
-from pydantic.v1 import Field
+from pydantic import Field
 
 from youtrack_sdk.entities import BaseModel
 from youtrack_sdk.helpers import model_to_field_names
@@ -9,19 +9,19 @@ from youtrack_sdk.helpers import model_to_field_names
 
 class SimpleModel(BaseModel):
     type: Literal["SimpleModel"] = Field(alias="$type", default="SimpleModel")
-    id: Optional[int]
-    short_name: Optional[str] = Field(alias="shortName")
+    id: Optional[int] = None
+    short_name: Optional[str] = Field(alias="shortName", default=None)
 
 
 class NestedModel(BaseModel):
     type: Literal["NestedModel"] = Field(alias="$type", default="NestedModel")
-    value: Optional[SimpleModel]
+    value: Optional[SimpleModel] = None
 
 
 class NestedUnionModel(BaseModel):
     type: Literal["NestedUnionModel"] = Field(alias="$type", default="NestedUnionModel")
-    items: Optional[Sequence[NestedModel | SimpleModel | int]]
-    entry: Optional[NestedModel | SimpleModel | int]
+    items: Optional[Sequence[NestedModel | SimpleModel | int]] = None
+    entry: Optional[NestedModel | SimpleModel | int] = None
 
 
 class TestModelToFieldNames(TestCase):

@@ -96,14 +96,14 @@ class TestClient(TestCase):
     def test_get_issue_comments(self):
         self.assertEqual(
             (
-                IssueComment.construct(
+                IssueComment.model_construct(
                     type="IssueComment",
                     id="4-296",
                     text="*Hello*, world!",
                     text_preview="<strong>Hello</strong>, world!",
                     created=datetime(2021, 12, 14, 11, 17, 48, tzinfo=UTC),
                     updated=None,
-                    author=User.construct(
+                    author=User.model_construct(
                         type="User",
                         id="1-3",
                         ring_id="b0fea1e1-ed18-43f6-a99d-40044fb1dfb0",
@@ -113,14 +113,14 @@ class TestClient(TestCase):
                     attachments=[],
                     deleted=False,
                 ),
-                IssueComment.construct(
+                IssueComment.model_construct(
                     type="IssueComment",
                     id="4-443",
                     text="Sample _comment_",
                     text_preview="Sample <em>comment</em>",
                     created=datetime(2021, 12, 15, 12, 51, 40, tzinfo=UTC),
                     updated=datetime(2021, 12, 15, 13, 8, 20, tzinfo=UTC),
-                    author=User.construct(
+                    author=User.model_construct(
                         type="User",
                         id="1-17",
                         ring_id="c5d08431-dd52-4cdd-9911-7ec3a18ad117",
@@ -130,14 +130,14 @@ class TestClient(TestCase):
                     attachments=[],
                     deleted=True,
                 ),
-                IssueComment.construct(
+                IssueComment.model_construct(
                     type="IssueComment",
                     id="4-678",
                     text="Comment with attachments",
                     text_preview="One attachment",
                     created=datetime(2021, 12, 21, 16, 41, 33, tzinfo=UTC),
                     updated=None,
-                    author=User.construct(
+                    author=User.model_construct(
                         type="User",
                         id="1-9",
                         ring_id="f19c93e1-833b-407b-a4de-7f9a3370aaf3",
@@ -145,7 +145,7 @@ class TestClient(TestCase):
                         email="sam@example.com",
                     ),
                     attachments=[
-                        IssueAttachment.construct(
+                        IssueAttachment.model_construct(
                             id="8-312",
                             type="IssueAttachment",
                             created=datetime(2021, 12, 21, 16, 41, 33, tzinfo=UTC),
@@ -166,13 +166,13 @@ class TestClient(TestCase):
     def test_get_projects(self):
         self.assertEqual(
             (
-                Project.construct(
+                Project.model_construct(
                     type="Project",
                     id="0-0",
                     name="Demo project",
                     short_name="DEMO",
                 ),
-                Project.construct(
+                Project.model_construct(
                     type="Project",
                     id="0-5",
                     name="Help Desk",
@@ -186,17 +186,17 @@ class TestClient(TestCase):
     def test_get_tags(self):
         self.assertEqual(
             (
-                Tag.construct(
+                Tag.model_construct(
                     type="Tag",
                     id="6-0",
                     name="productivity",
                 ),
-                Tag.construct(
+                Tag.model_construct(
                     type="Tag",
                     id="6-1",
                     name="tip",
                 ),
-                Tag.construct(
+                Tag.model_construct(
                     type="Tag",
                     id="6-5",
                     name="Star",
@@ -209,28 +209,28 @@ class TestClient(TestCase):
     def test_get_users(self):
         self.assertEqual(
             (
-                User.construct(
+                User.model_construct(
                     type="User",
                     id="1-17",
                     ring_id="c5d08431-dd52-4cdd-9911-7ec3a18ad117",
                     login="max.demo",
                     email="max@example.com",
                 ),
-                User.construct(
+                User.model_construct(
                     type="User",
                     id="1-3",
                     ring_id="b0fea1e1-ed18-43f6-a99d-40044fb1dfb0",
                     login="support",
                     email="support@example.com",
                 ),
-                User.construct(
+                User.model_construct(
                     type="User",
                     id="1-9",
                     ring_id="f19c93e1-833b-407b-a4de-7f9a3370aaf3",
                     login="sam",
                     email="sam@example.com",
                 ),
-                User.construct(
+                User.model_construct(
                     type="User",
                     id="1-10",
                     ring_id="20e4e701-7e87-45f8-8492-c448600b7991",
@@ -246,7 +246,7 @@ class TestClient(TestCase):
     def test_get_issue_link_types(self):
         self.assertEqual(
             (
-                IssueLinkType.construct(
+                IssueLinkType.model_construct(
                     type="IssueLinkType",
                     id="106-0",
                     name="Relates",
@@ -259,7 +259,7 @@ class TestClient(TestCase):
                     aggregation=False,
                     read_only=False,
                 ),
-                IssueLinkType.construct(
+                IssueLinkType.model_construct(
                     type="IssueLinkType",
                     id="106-1",
                     name="Depend",
@@ -272,7 +272,7 @@ class TestClient(TestCase):
                     aggregation=False,
                     read_only=False,
                 ),
-                IssueLinkType.construct(
+                IssueLinkType.model_construct(
                     type="IssueLinkType",
                     id="106-2",
                     name="Duplicate",
@@ -285,7 +285,7 @@ class TestClient(TestCase):
                     aggregation=True,
                     read_only=True,
                 ),
-                IssueLinkType.construct(
+                IssueLinkType.model_construct(
                     type="IssueLinkType",
                     id="106-3",
                     name="Subtask",
@@ -306,10 +306,10 @@ class TestClient(TestCase):
     def test_get_issue_links(self):
         self.assertEqual(
             (
-                IssueLink.construct(
+                IssueLink.model_construct(
                     id="106-0",
                     direction="BOTH",
-                    link_type=IssueLinkType.construct(
+                    link_type=IssueLinkType.model_construct(
                         type="IssueLinkType",
                         id="106-0",
                         name="Relates",
@@ -325,10 +325,10 @@ class TestClient(TestCase):
                     issues=[],
                     trimmed_issues=[],
                 ),
-                IssueLink.construct(
+                IssueLink.model_construct(
                     id="106-1s",
                     direction="OUTWARD",
-                    link_type=IssueLinkType.construct(
+                    link_type=IssueLinkType.model_construct(
                         type="IssueLinkType",
                         id="106-1",
                         name="Depend",
@@ -344,10 +344,10 @@ class TestClient(TestCase):
                     issues=[],
                     trimmed_issues=[],
                 ),
-                IssueLink.construct(
+                IssueLink.model_construct(
                     id="106-1t",
                     direction="INWARD",
-                    link_type=IssueLinkType.construct(
+                    link_type=IssueLinkType.model_construct(
                         type="IssueLinkType",
                         id="106-1",
                         name="Depend",
@@ -363,10 +363,10 @@ class TestClient(TestCase):
                     issues=[],
                     trimmed_issues=[],
                 ),
-                IssueLink.construct(
+                IssueLink.model_construct(
                     id="106-2s",
                     direction="OUTWARD",
-                    link_type=IssueLinkType.construct(
+                    link_type=IssueLinkType.model_construct(
                         type="IssueLinkType",
                         id="106-2",
                         name="Duplicate",
@@ -380,20 +380,20 @@ class TestClient(TestCase):
                         read_only=True,
                     ),
                     issues=[
-                        Issue.construct(
+                        Issue.model_construct(
                             type="Issue",
                             id="2-46619",
                             id_readable="PT-1839",
                             created=datetime(2022, 9, 26, 13, 50, 12, 810000, tzinfo=UTC),
                             updated=datetime(2022, 10, 5, 6, 28, 57, 291000, tzinfo=UTC),
                             resolved=datetime(2022, 9, 26, 13, 51, 29, 671000, tzinfo=UTC),
-                            project=Project.construct(
+                            project=Project.model_construct(
                                 type="Project",
                                 id="0-4",
                                 name="Test: project",
                                 short_name="PT",
                             ),
-                            reporter=User.construct(
+                            reporter=User.model_construct(
                                 type="User",
                                 id="1-52",
                                 name="Mary Jane",
@@ -401,7 +401,7 @@ class TestClient(TestCase):
                                 login="mary.jane",
                                 email=None,
                             ),
-                            updater=User.construct(
+                            updater=User.model_construct(
                                 type="User",
                                 id="1-64",
                                 name="Paul Lawson",
@@ -418,20 +418,20 @@ class TestClient(TestCase):
                         ),
                     ],
                     trimmed_issues=[
-                        Issue.construct(
+                        Issue.model_construct(
                             type="Issue",
                             id="2-46619",
                             id_readable="PT-1840",
                             created=datetime(2022, 9, 26, 13, 50, 12, 810000, tzinfo=UTC),
                             updated=datetime(2022, 10, 5, 6, 28, 57, 291000, tzinfo=UTC),
                             resolved=datetime(2022, 9, 26, 13, 51, 29, 671000, tzinfo=UTC),
-                            project=Project.construct(
+                            project=Project.model_construct(
                                 type="Project",
                                 id="0-4",
                                 name="Test: project",
                                 short_name="PT",
                             ),
-                            reporter=User.construct(
+                            reporter=User.model_construct(
                                 type="User",
                                 id="1-52",
                                 name="Mary Jane",
@@ -439,7 +439,7 @@ class TestClient(TestCase):
                                 login="mary.jane",
                                 email=None,
                             ),
-                            updater=User.construct(
+                            updater=User.model_construct(
                                 type="User",
                                 id="1-64",
                                 name="Paul Lawson",
@@ -456,10 +456,10 @@ class TestClient(TestCase):
                         ),
                     ],
                 ),
-                IssueLink.construct(
+                IssueLink.model_construct(
                     id="106-2t",
                     direction="INWARD",
-                    link_type=IssueLinkType.construct(
+                    link_type=IssueLinkType.model_construct(
                         type="IssueLinkType",
                         id="106-2",
                         name="Duplicate",
@@ -475,10 +475,10 @@ class TestClient(TestCase):
                     issues=[],
                     trimmed_issues=[],
                 ),
-                IssueLink.construct(
+                IssueLink.model_construct(
                     id="106-3s",
                     direction="OUTWARD",
-                    link_type=IssueLinkType.construct(
+                    link_type=IssueLinkType.model_construct(
                         type="IssueLinkType",
                         id="106-3",
                         name="Subtask",
@@ -494,10 +494,10 @@ class TestClient(TestCase):
                     issues=[],
                     trimmed_issues=[],
                 ),
-                IssueLink.construct(
+                IssueLink.model_construct(
                     id="106-3t",
                     direction="INWARD",
-                    link_type=IssueLinkType.construct(
+                    link_type=IssueLinkType.model_construct(
                         type="IssueLinkType",
                         id="106-3",
                         name="Subtask",
@@ -528,11 +528,11 @@ class TestClient(TestCase):
     def test_get_agiles(self):
         self.assertEqual(
             (
-                Agile.construct(
+                Agile.model_construct(
                     type="Agile",
                     id="120-0",
                     name="Demo Board",
-                    owner=User.construct(
+                    owner=User.model_construct(
                         type="User",
                         id="1-17",
                         name="Max Demo",
@@ -542,7 +542,7 @@ class TestClient(TestCase):
                     ),
                     visible_for=None,
                     projects=[
-                        Project.construct(
+                        Project.model_construct(
                             type="Project",
                             id="0-0",
                             name="Demo project",
@@ -550,13 +550,13 @@ class TestClient(TestCase):
                         ),
                     ],
                     sprints=[
-                        SprintRef.construct(
+                        SprintRef.model_construct(
                             type="Sprint",
                             id="121-12",
                             name="First sprint",
                         ),
                     ],
-                    current_sprint=SprintRef.construct(
+                    current_sprint=SprintRef.model_construct(
                         type="Sprint",
                         id="121-12",
                         name="First sprint",
@@ -579,7 +579,7 @@ class TestClient(TestCase):
         self.assertEqual(
             (
                 TEST_SPRINT,
-                Sprint.construct(
+                Sprint.model_construct(
                     type="Sprint",
                     id="121-11",
                     name="Week 2",
@@ -589,7 +589,7 @@ class TestClient(TestCase):
                     archived=False,
                     is_default=False,
                     unresolved_issues_count=0,
-                    agile=AgileRef.construct(
+                    agile=AgileRef.model_construct(
                         type="Agile",
                         id="120-8",
                         name="Kanban",
