@@ -16,7 +16,7 @@ def deep_update(dest: dict, *mappings: dict) -> dict:
 
     for source in mappings:
         for key, value in source.items():
-            if (key in result) and (type(result[key]) != type(value)):
+            if (key in result) and (type(result[key]) is not type(value)):
                 raise TypeError(
                     f"Destination type '{type(result[key])}' differs from source type '{type(value)}' for key '{key}'",
                 )

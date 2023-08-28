@@ -223,7 +223,13 @@ class Client:
             ),
         )
 
-    def update_issue_custom_field(self, *, issue_id: str, field: IssueCustomFieldType) -> IssueCustomFieldType:
+    def update_issue_custom_field(
+        self,
+        *,
+        issue_id: str,
+        field: IssueCustomFieldType,
+        mute_update_notifications: bool = False,
+    ) -> IssueCustomFieldType:
         """Update specific custom field in the issue.
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-customFields.html#update-IssueCustomField-method
@@ -233,6 +239,7 @@ class Client:
                 url=self._build_url(
                     path=f"/issues/{issue_id}/customFields/{field.id}",
                     fields=model_to_field_names(IssueCustomFieldType),
+                    muteUpdateNotifications=mute_update_notifications,
                 ),
                 data=field,
             ),
@@ -280,7 +287,13 @@ class Client:
             ),
         )
 
-    def update_issue_comment(self, *, issue_id: str, comment: IssueComment) -> IssueComment:
+    def update_issue_comment(
+        self,
+        *,
+        issue_id: str,
+        comment: IssueComment,
+        mute_update_notifications: bool = False,
+    ) -> IssueComment:
         """Update an existing comment of the specific issue.
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-comments.html#update-IssueComment-method
@@ -290,6 +303,7 @@ class Client:
                 url=self._build_url(
                     path=f"/issues/{issue_id}/comments/{comment.id}",
                     fields=model_to_field_names(IssueComment),
+                    muteUpdateNotifications=mute_update_notifications,
                 ),
                 data=comment,
             ),
