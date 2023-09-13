@@ -7,7 +7,7 @@ authors = []
 [tool.poetry.dependencies]
 python = "^3.11"
 requests = "*"
-pydantic = "*"
+pydantic = "^2"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
