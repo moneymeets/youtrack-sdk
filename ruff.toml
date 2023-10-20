@@ -1,0 +1,26 @@
+# https://docs.astral.sh/ruff/configuration/
+exclude = ["manage.py"]
+force-exclude = true
+line-length = 120
+target-version = "py312"
+
+# Full list of available rules can be found on https://docs.astral.sh/ruff/rules/
+select = [
+    "COM",    # flake8-commas
+    "DJ001",  # flake8-django: Avoid using null=True on string-based fields such as
+    "DJ012",  # flake8-django: Order of model's inner classes, methods, and fields
+    "DTZ",    # flake8-datetimez
+    "E",      # Error
+    "F",      # Pyflakes
+    "I",      # isort
+    "PTH",    # flake8-use-pathlib
+    "RSE",    # flake8-raise
+    "Q",      # flake8-quotes
+    "UP009",  # pyupgrade: UTF-8 encoding declaration is unnecessary
+    "W"       # Warning
+]
+ignore = []
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
