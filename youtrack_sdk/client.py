@@ -1,6 +1,6 @@
 from http import HTTPMethod, HTTPStatus
 from json import JSONDecodeError
-from typing import IO, Optional, Sequence, Type, TypeVar
+from typing import IO, Optional, Sequence, Type
 from urllib.parse import urlencode
 
 from pydantic import TypeAdapter
@@ -24,11 +24,15 @@ from .exceptions import YouTrackException, YouTrackNotFound, YouTrackUnauthorize
 from .helpers import model_to_field_names, obj_to_json
 from .types import IssueLinkDirection
 
-T = TypeVar("T", bound=BaseModel)
-
 
 class Client:
-    def __init__(self, *, base_url: str, token: str, timeout: Optional[float | tuple[float, float]] = None):
+    def __init__(
+        self,
+        *,
+        base_url: str,
+        token: str,
+        timeout: Optional[float | tuple[float, float]] = None,
+    ):
         """
         :param base_url: YouTrack instance URL (e.g. https://example.com/youtrack)
         :param token: Permanent YouTrack token
@@ -143,7 +147,7 @@ class Client:
             ),
         )
 
-    def get_issues(
+    def get_issues[T](
         self,
         *,
         model: Type[T] = Issue,
@@ -185,7 +189,13 @@ class Client:
             ),
         )
 
-    def update_issue(self, *, issue_id: str, issue: Issue, mute_update_notifications: bool = False) -> Issue:
+    def update_issue(
+        self,
+        *,
+        issue_id: str,
+        issue: Issue,
+        mute_update_notifications: bool = False,
+    ) -> Issue:
         """Update an existing issue.
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues.html#update-Issue-method
@@ -256,7 +266,13 @@ class Client:
             ),
         )
 
-    def get_issue_comments(self, *, issue_id: str, offset: int = 0, count: int = -1) -> Sequence[IssueComment]:
+    def get_issue_comments(
+        self,
+        *,
+        issue_id: str,
+        offset: int = 0,
+        count: int = -1,
+    ) -> Sequence[IssueComment]:
         """Get all accessible comments of the specific issue.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-comments.html#get_all-IssueComment-method
@@ -272,7 +288,12 @@ class Client:
             ),
         )
 
-    def create_issue_comment(self, *, issue_id: str, comment: IssueComment) -> IssueComment:
+    def create_issue_comment(
+        self,
+        *,
+        issue_id: str,
+        comment: IssueComment,
+    ) -> IssueComment:
         """Add a new comment to an issue with a specific ID.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-comments.html#create-IssueComment-method
@@ -314,7 +335,10 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-comments.html#update-IssueComment-method
         """
-        self.update_issue_comment(issue_id=issue_id, comment=(IssueComment(id=comment_id, deleted=True)))
+        self.update_issue_comment(
+            issue_id=issue_id,
+            comment=(IssueComment(id=comment_id, deleted=True)),
+        )
 
     def delete_issue_comment(self, *, issue_id: str, comment_id: str):
         """Delete a specific issue comment.
@@ -327,7 +351,13 @@ class Client:
             ),
         )
 
-    def get_issue_attachments(self, *, issue_id: str, offset: int = 0, count: int = -1) -> Sequence[IssueAttachment]:
+    def get_issue_attachments(
+        self,
+        *,
+        issue_id: str,
+        offset: int = 0,
+        count: int = -1,
+    ) -> Sequence[IssueAttachment]:
         """Get a list of all attachments of the specific issue.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-attachments.html#get_all-IssueAttachment-method
@@ -343,7 +373,12 @@ class Client:
             ),
         )
 
-    def create_issue_attachments(self, *, issue_id: str, files: dict[str, IO]) -> Sequence[IssueAttachment]:
+    def create_issue_attachments(
+        self,
+        *,
+        issue_id: str,
+        files: dict[str, IO],
+    ) -> Sequence[IssueAttachment]:
         """Add an attachment to the issue.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-attachments.html#create-IssueAttachment-method
@@ -436,7 +471,12 @@ class Client:
             ),
         )
 
-    def get_issue_links(self, issue_id: str, offset: int = 0, count: int = -1) -> Sequence[IssueLink]:
+    def get_issue_links(
+        self,
+        issue_id: str,
+        offset: int = 0,
+        count: int = -1,
+    ) -> Sequence[IssueLink]:
         """Read the list of links for the issue in YouTrack.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-links.html#get_all-IssueLink-method
@@ -452,7 +492,11 @@ class Client:
             ),
         )
 
-    def get_issue_link_types(self, offset: int = 0, count: int = -1) -> Sequence[IssueLinkType]:
+    def get_issue_link_types(
+        self,
+        offset: int = 0,
+        count: int = -1,
+    ) -> Sequence[IssueLinkType]:
         """Read the list of all available link types in in YouTrack.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issueLinkTypes.html#get_all-IssueLinkType-method
@@ -537,7 +581,13 @@ class Client:
             ),
         )
 
-    def get_sprints(self, *, agile_id: str, offset: int = 0, count: int = -1) -> Sequence[Sprint]:
+    def get_sprints(
+        self,
+        *,
+        agile_id: str,
+        offset: int = 0,
+        count: int = -1,
+    ) -> Sequence[Sprint]:
         """Get the list of all sprints of the agile board.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-agiles-agileID-sprints.html#get_all-Sprint-method
