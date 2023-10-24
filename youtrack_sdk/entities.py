@@ -1,8 +1,7 @@
 from typing import Literal, Optional, Sequence
 
-from pydantic import AwareDatetime
+from pydantic import AwareDatetime, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from pydantic import BaseModel as PydanticBaseModel
-from pydantic import ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 
 from .types import YouTrackDate, validate_youtrack_datetime
 

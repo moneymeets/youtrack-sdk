@@ -5,7 +5,7 @@ description = ""
 authors = []
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "~3.12"
 requests = "*"
 pydantic = "^2"
 
@@ -15,22 +15,7 @@ pytest-cov = "*"
 
 requests-mock = "*"
 
-add-trailing-comma = "*"
-black = "*"
-flake8 = "*"
-flake8-black = "*"
-flake8-coding = "*"
-flake8-isort = "*"
-flake8-quotes = "*"
-isort = {extras = ["pyproject"], version = "*"}
-
-[tool.black]
-line-length = 120
-target-version = ["py311"]
-
-[tool.isort]
-profile = "black"
-line_length = 120
+ruff = "*"
 
 [tool.coverage.run]
 branch = true
