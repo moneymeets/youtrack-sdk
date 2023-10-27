@@ -1,8 +1,23 @@
 [tool.poetry]
 name = "youtrack-sdk"
-version = "0.1.0"
-description = ""
-authors = []
+version = "1.1+SNAPSHOT"
+description = "YouTrack SDK"
+authors = ["moneymeets <service@moneymeets.com>"]
+readme = "README.md"
+repository = "https://github.com/moneymeets/youtrack-sdk"
+packages = [
+    { include = "youtrack_sdk" },
+]
+keywords = ["youtrack", "sdk"]
+license = "MIT"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+]
 
 [tool.poetry.dependencies]
 python = "~3.12"
