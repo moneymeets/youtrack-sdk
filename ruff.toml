@@ -24,3 +24,7 @@ ignore = []
 # Allow autofix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
 unfixable = []
+
+# Ignore line-too-long error in our generated codes
+[per-file-ignores]
+"**/api/schema/*" = ["E501"]
