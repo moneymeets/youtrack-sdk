@@ -16,7 +16,7 @@ jobs:
 
       - name: Publish package
         run: |
-          sed -i -e "s/1+SNAPSHOT/0.$(date +"%Y%m%d%H%M")+$(git rev-parse --verify --short=7 HEAD)/" pyproject.toml
+          sed -i -e "s/1+SNAPSHOT/0.$(date +"%Y%m%d%H%M")/" pyproject.toml
           poetry publish --build
         env:
           POETRY_HTTP_BASIC_PYPI_USERNAME: ${{ secrets.POETRY_HTTP_BASIC_PYPI_USERNAME }}
