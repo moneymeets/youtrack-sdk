@@ -8,6 +8,7 @@ repository = "https://github.com/moneymeets/youtrack-sdk"
 packages = [
     { include = "youtrack_sdk" },
 ]
+include = ["VERSION.txt"]
 keywords = ["youtrack", "sdk"]
 license = "MIT"
 classifiers = [
