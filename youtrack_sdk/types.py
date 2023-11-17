@@ -2,8 +2,8 @@ from datetime import UTC, date, datetime, timedelta
 from enum import StrEnum
 from typing import Annotated
 
-from pydantic import BeforeValidator
-from pydantic_core.core_schema import FieldValidationInfo
+from pydantic import AwareDatetime, BeforeValidator
+from pydantic_core.core_schema import ValidationInfo
 
 YouTrackDate = Annotated[
     date,
@@ -13,7 +13,7 @@ YouTrackDate = Annotated[
 ]
 
 
-def validate_youtrack_datetime(value, info: FieldValidationInfo):
+def validate_youtrack_datetime(value, info: ValidationInfo):
     if "project_custom_field" not in info.data:
         raise RuntimeError("validate_youtrack_datetime can only be used with models having project_custom_field")
     if (
@@ -30,6 +30,9 @@ def validate_youtrack_datetime(value, info: FieldValidationInfo):
         return datetime.fromtimestamp(value / 1000, UTC)
 
     return value
+
+
+YouTrackDateTime = Annotated[AwareDatetime, BeforeValidator(validate_youtrack_datetime)]
 
 
 class IssueLinkDirection(StrEnum):

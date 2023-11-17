@@ -1,9 +1,9 @@
 from typing import Literal, Optional, Sequence
 
-from pydantic import AwareDatetime, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import AwareDatetime, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from pydantic import BaseModel as PydanticBaseModel
 
-from .types import YouTrackDate, validate_youtrack_datetime
+from .types import YouTrackDate, YouTrackDateTime
 
 
 class BaseModel(PydanticBaseModel):
@@ -154,8 +154,7 @@ class TextIssueCustomField(IssueCustomField):
 
 class SimpleIssueCustomField(IssueCustomField):
     type: Literal["SimpleIssueCustomField"] = Field(alias="$type", default="SimpleIssueCustomField")
-    value: Optional[AwareDatetime | StrictStr | StrictInt | StrictFloat] = None
-    validate_value = field_validator("value")(validate_youtrack_datetime)
+    value: Optional[YouTrackDateTime | StrictStr | StrictInt | StrictFloat] = None
 
 
 class DateIssueCustomField(SimpleIssueCustomField):
