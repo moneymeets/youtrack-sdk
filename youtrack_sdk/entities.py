@@ -283,6 +283,10 @@ class Issue(BaseModel):
     tags: Optional[Sequence[Tag]] = None
     custom_fields: Optional[Sequence[IssueCustomFieldType]] = Field(alias="customFields", default=None)
 
+    @property
+    def url(self) -> str:
+        return f"/issue/{self.issue_id}"
+
 
 class IssueAttachment(BaseModel):
     type: Literal["IssueAttachment"] = Field(alias="$type", default="IssueAttachment")
