@@ -1,10 +1,14 @@
+from http import HTTPStatus
 from typing import Literal, Optional, Sequence, Union
 from unittest import TestCase
 
+import requests_mock
 from pydantic import Field
 
+from tests.test_definitions import TEST_ISSUE, TEST_STATE_CUSTOM_FIELD
+from youtrack_sdk import Client
 from youtrack_sdk.entities import BaseModel
-from youtrack_sdk.helpers import model_to_field_names
+from youtrack_sdk.helpers import NonSingleValueError, exists, get_issue_custom_field, model_to_field_names
 
 
 class SimpleModel(BaseModel):
@@ -54,3 +58,30 @@ class TestModelToFieldNames(TestCase):
             "$type,id,shortName,value($type,id,shortName)",
             model_to_field_names(Union[SimpleModel | NestedModel]),
         )
+
+
+class TestHelpers(TestCase):
+    def setUp(self):
+        self.client = Client(base_url="https://server", token="test")
+
+    def test_get_issue_custom_field(self):
+        self.assertEqual(
+            get_issue_custom_field(issue=TEST_ISSUE, field_name="State"),
+            TEST_STATE_CUSTOM_FIELD,
+        )
+        self.assertRaises(
+            NonSingleValueError,
+            get_issue_custom_field,
+            issue=TEST_ISSUE,
+            field_name="Unknown",
+        )
+
+    @requests_mock.Mocker()
+    def test_issue_exists(self, m):
+        m.register_uri(method="GET", url="https://server/api/issues/1", json={})
+        self.assertTrue(exists(self.client.get_issue, issue_id="1"))
+
+    @requests_mock.Mocker()
+    def test_issue_not_found(self, m):
+        m.register_uri(method="GET", url="https://server/api/issues/1", status_code=HTTPStatus.NOT_FOUND)
+        self.assertFalse(exists(self.client.get_issue, issue_id="1"))

@@ -2,9 +2,12 @@ import json
 from copy import deepcopy
 from datetime import UTC, date, datetime, time
 from itertools import starmap
-from typing import Any, Optional, Type, Union, get_args
+from typing import Any, Callable, Collection, Optional, Type, Union, get_args
 
 from pydantic import BaseModel
+
+from youtrack_sdk.entities import Issue, IssueCustomFieldType
+from youtrack_sdk.exceptions import YouTrackNotFound
 
 
 def deep_update(dest: dict, *mappings: dict) -> dict:
@@ -114,3 +117,28 @@ def custom_json_dumps(obj: Any) -> str:
 
 def obj_to_json(obj: Optional[BaseModel]) -> str:
     return custom_json_dumps(obj_to_dict(obj))
+
+
+class NonSingleValueError(Exception):
+    pass
+
+
+def get_single_value[T](values: Collection[T]) -> T:
+    try:
+        (value,) = values
+    except ValueError as e:
+        raise NonSingleValueError(f"single element expected, found: {values}") from e
+    return value
+
+
+def get_issue_custom_field(issue: Issue, field_name: str) -> IssueCustomFieldType:
+    return get_single_value(tuple(filter(lambda field: field.name == field_name, issue.custom_fields)))
+
+
+def exists(getter: Callable, *args, **kwargs) -> bool:
+    try:
+        getter(*args, **kwargs)
+    except YouTrackNotFound:
+        return False
+    else:
+        return True

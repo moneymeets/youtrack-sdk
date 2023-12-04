@@ -133,6 +133,9 @@ class Client:
     def _delete(self, *, url: str) -> Optional[dict]:
         return self._send_request(method=HTTPMethod.DELETE, url=url)
 
+    def get_absolute_url(self, *, path: str) -> str:
+        return f"{self._base_url}{path}"
+
     def get_issue(self, *, issue_id: str) -> Issue:
         """Read an issue with specific ID.
 
