@@ -41,6 +41,27 @@ class CustomIssue(BaseModel):
     custom_fields: Optional[Sequence[IssueCustomFieldType]] = Field(alias="customFields", default=None)
 
 
+TEST_STATE_CUSTOM_FIELD = StateIssueCustomField.model_construct(
+    id="110-50",
+    name="State",
+    type="StateIssueCustomField",
+    value=StateBundleElement.model_construct(
+        id="98-37",
+        name="In Progress",
+        type="StateBundleElement",
+    ),
+    project_custom_field=StateProjectCustomField.model_construct(
+        field=CustomField.model_construct(
+            type="CustomField",
+            field_type=FieldType.model_construct(
+                type="FieldType",
+                id="state[1]",
+            ),
+        ),
+        type="StateProjectCustomField",
+    ),
+)
+
 TEST_ISSUE = Issue.model_construct(
     type="Issue",
     id="1-937",
@@ -74,26 +95,7 @@ TEST_ISSUE = Issue.model_construct(
     comments_count=7,
     tags=[Tag.model_construct(type="Tag", id="5-7", name="Review")],
     custom_fields=[
-        StateIssueCustomField.model_construct(
-            id="110-50",
-            name="State",
-            type="StateIssueCustomField",
-            value=StateBundleElement.model_construct(
-                id="98-37",
-                name="In Progress",
-                type="StateBundleElement",
-            ),
-            project_custom_field=StateProjectCustomField.model_construct(
-                field=CustomField.model_construct(
-                    type="CustomField",
-                    field_type=FieldType.model_construct(
-                        type="FieldType",
-                        id="state[1]",
-                    ),
-                ),
-                type="StateProjectCustomField",
-            ),
-        ),
+        TEST_STATE_CUSTOM_FIELD,
         SingleUserIssueCustomField.model_construct(
             id="111-8",
             name="Assignee",

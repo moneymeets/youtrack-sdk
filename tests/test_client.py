@@ -71,6 +71,9 @@ class TestClient(TestCase):
             timeout=123,
         )
 
+    def test_get_absolute_url(self):
+        self.assertEqual(self.client.get_absolute_url(path="/issue/1"), "https://server/issue/1")
+
     @mock_response(url="https://server/api/issues/1", response_name="issue")
     def test_get_issue(self):
         self.assertEqual(
