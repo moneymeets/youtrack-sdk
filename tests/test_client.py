@@ -81,6 +81,9 @@ class TestClient(TestCase):
             self.client.get_issue(issue_id="1"),
         )
 
+    def test_issue_url(self):
+        self.assertEqual(TEST_ISSUE.url, "/issue/HD-25")
+
     @mock_response(url="https://server/api/issues/", response_name="issues")
     def test_get_issues(self):
         self.assertEqual(
