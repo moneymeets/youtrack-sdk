@@ -285,7 +285,7 @@ class Issue(BaseModel):
 
     @property
     def url(self) -> str:
-        return f"/issue/{self.issue_id}"
+        return f"/issue/{self.id_readable}"
 
 
 class IssueAttachment(BaseModel):
