@@ -6,6 +6,7 @@ target-version = "py312"
 
 # Full list of available rules can be found on https://docs.astral.sh/ruff/rules/
 select = [
+    "C4",     # flake8-comprehensions
     "COM",    # flake8-commas
     "DJ001",  # flake8-django: Avoid using null=True on string-based fields such as
     "DJ012",  # flake8-django: Order of model's inner classes, methods, and fields
