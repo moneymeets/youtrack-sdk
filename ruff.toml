@@ -4,6 +4,7 @@ force-exclude = true
 line-length = 120
 target-version = "py312"
 
+[lint]
 # Full list of available rules can be found on https://docs.astral.sh/ruff/rules/
 select = [
     "C4",     # flake8-comprehensions
@@ -27,5 +28,5 @@ fixable = ["ALL"]
 unfixable = []
 
 # Ignore line-too-long error in our generated codes
-[per-file-ignores]
+[lint.per-file-ignores]
 "**/api/schema/*" = ["E501"]
