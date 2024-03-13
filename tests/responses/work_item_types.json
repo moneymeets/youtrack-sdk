@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Development",
+    "id": "1-0",
+    "$type": "WorkItemType"
+  },
+  {
+    "name": "Testing",
+    "id": "1-1",
+    "$type": "WorkItemType"
+  },
+  {
+    "name": "Documentation",
+    "id": "1-2",
+    "$type": "WorkItemType"
+  }
+]

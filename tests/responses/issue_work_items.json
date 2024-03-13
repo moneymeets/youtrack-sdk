@@ -1,0 +1,38 @@
+[
+  {
+    "duration": {
+      "id": "100",
+      "minutes": 100,
+      "presentation": "1h 40m",
+      "$type": "DurationValue"
+    },
+    "date": 1709424000000,
+    "created": 1710330927000,
+    "updated": null,
+    "type": {
+      "name": "Development",
+      "id": "1-0",
+      "$type": "WorkItemType"
+    },
+    "text": "Working hard",
+    "creator": {
+      "login": "mary.jane",
+      "ringId": "26677773-c425-4f47-b62c-dbfb2ad21e8f",
+      "email": "mary.jane@example.com",
+      "name": "Mary Jane",
+      "id": "1-52",
+      "$type": "User"
+    },
+    "author": {
+      "login": "paul.lawson",
+      "ringId": "d53ece48-4c60-4b88-b93f-68392b975087",
+      "email": "",
+      "name": "Paul Lawson",
+      "id": "1-64",
+      "$type": "User"
+    },
+    "textPreview": "<div class=\"wiki text common-markdown\"><p>Working hard</p>\n</div>",
+    "id": "12-14",
+    "$type": "IssueWorkItem"
+  }
+]
