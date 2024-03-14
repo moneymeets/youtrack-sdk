@@ -36,6 +36,13 @@ class PeriodValue(BaseModel):
     presentation: Optional[str] = None
 
 
+class DurationValue(BaseModel):
+    type: Literal["DurationValue"] = Field(alias="$type", default="DurationValue")
+    id: Optional[str] = None
+    minutes: Optional[int] = None
+    presentation: Optional[str] = None
+
+
 class BundleElement(BaseModel):
     id: Optional[str] = None
     name: Optional[str] = None
@@ -331,6 +338,26 @@ class IssueLink(BaseModel):
     link_type: Optional[IssueLinkType] = Field(alias="linkType", default=None)
     issues: Optional[Sequence[Issue]] = None
     trimmed_issues: Optional[Sequence[Issue]] = Field(alias="trimmedIssues", default=None)
+
+
+class WorkItemType(BaseModel):
+    type: Literal["WorkItemType"] = Field(alias="$type", default="WorkItemType")
+    id: Optional[str] = None
+    name: Optional[str] = None
+
+
+class IssueWorkItem(BaseModel):
+    type: Literal["IssueWorkItem"] = Field(alias="$type", default="IssueWorkItem")
+    id: Optional[str] = None
+    author: Optional[User] = None
+    creator: Optional[User] = None
+    text: Optional[str] = None
+    text_preview: Optional[str] = Field(alias="textPreview", default=None)
+    work_item_type: Optional[WorkItemType] = Field(alias="type", default=None)
+    created: Optional[AwareDatetime] = None
+    updated: Optional[AwareDatetime] = None
+    duration: Optional[DurationValue] = None
+    date: Optional[AwareDatetime] = None
 
 
 class AgileRef(BaseModel):

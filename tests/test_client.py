@@ -13,16 +13,19 @@ from youtrack_sdk.client import Client
 from youtrack_sdk.entities import (
     Agile,
     AgileRef,
+    DurationValue,
     Issue,
     IssueAttachment,
     IssueComment,
     IssueLink,
     IssueLinkType,
+    IssueWorkItem,
     Project,
     Sprint,
     SprintRef,
     Tag,
     User,
+    WorkItemType,
 )
 
 from .test_definitions import (
@@ -168,6 +171,50 @@ class TestClient(TestCase):
             self.client.get_issue_comments(issue_id="1"),
         )
 
+    @mock_response(url="https://server/api/issues/1/timeTracking/workItems", response_name="issue_work_items")
+    def test_get_issue_work_items(self):
+        self.assertEqual(
+            (
+                IssueWorkItem.model_construct(
+                    type="IssueWorkItem",
+                    id="12-14",
+                    author=User.model_construct(
+                        type="User",
+                        id="1-64",
+                        name="Paul Lawson",
+                        ring_id="d53ece48-4c60-4b88-b93f-68392b975087",
+                        login="paul.lawson",
+                        email="",
+                    ),
+                    creator=User.model_construct(
+                        type="User",
+                        id="1-52",
+                        name="Mary Jane",
+                        ring_id="26677773-c425-4f47-b62c-dbfb2ad21e8f",
+                        login="mary.jane",
+                        email="mary.jane@example.com",
+                    ),
+                    text="Working hard",
+                    text_preview='<div class="wiki text common-markdown"><p>Working hard</p>\n</div>',
+                    work_item_type=WorkItemType(
+                        type="WorkItemType",
+                        id="1-0",
+                        name="Development",
+                    ),
+                    created=datetime(2024, 3, 13, 11, 55, 27, tzinfo=UTC),
+                    updated=None,
+                    duration=DurationValue(
+                        type="DurationValue",
+                        id="100",
+                        minutes=100,
+                        presentation="1h 40m",
+                    ),
+                    date=datetime(2024, 3, 3, 0, 0, tzinfo=UTC),
+                ),
+            ),
+            self.client.get_issue_work_items(issue_id="1"),
+        )
+
     @mock_response(url="https://server/api/admin/projects", response_name="projects")
     def test_get_projects(self):
         self.assertEqual(
@@ -186,6 +233,32 @@ class TestClient(TestCase):
                 ),
             ),
             self.client.get_projects(),
+        )
+
+    @mock_response(
+        url="https://server/api/admin/projects/DEMO/timeTrackingSettings/workItemTypes",
+        response_name="work_item_types",
+    )
+    def test_get_project_work_item_types(self):
+        self.assertEqual(
+            (
+                WorkItemType.model_construct(
+                    type="WorkItemType",
+                    id="1-0",
+                    name="Development",
+                ),
+                WorkItemType.model_construct(
+                    type="WorkItemType",
+                    id="1-1",
+                    name="Testing",
+                ),
+                WorkItemType.model_construct(
+                    type="WorkItemType",
+                    id="1-2",
+                    name="Documentation",
+                ),
+            ),
+            self.client.get_project_work_item_types(project_id="DEMO"),
         )
 
     @mock_response(url="https://server/api/tags", response_name="tags")

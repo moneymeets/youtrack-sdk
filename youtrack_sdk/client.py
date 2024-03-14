@@ -15,10 +15,12 @@ from .entities import (
     IssueCustomFieldType,
     IssueLink,
     IssueLinkType,
+    IssueWorkItem,
     Project,
     Sprint,
     Tag,
     User,
+    WorkItemType,
 )
 from .exceptions import YouTrackException, YouTrackNotFound, YouTrackUnauthorized
 from .helpers import model_to_field_names, obj_to_json
@@ -414,6 +416,37 @@ class Client:
             ),
         )
 
+    def get_issue_work_items(self, *, issue_id: str, offset: int = 0, count: int = -1) -> Sequence[IssueWorkItem]:
+        """Get the list of all work items of the specific issue.
+
+        https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-timeTracking-workItems.html#get_all-IssueWorkItem-method
+        """
+        return TypeAdapter(tuple[IssueWorkItem, ...]).validate_python(
+            self._get(
+                url=self._build_url(
+                    path=f"/issues/{issue_id}/timeTracking/workItems",
+                    fields=model_to_field_names(IssueWorkItem),
+                    offset=offset,
+                    count=count,
+                ),
+            ),
+        )
+
+    def create_issue_work_item(self, *, issue_id: str, issue_work_item: IssueWorkItem) -> IssueWorkItem:
+        """Add a new work item to the issue.
+
+        https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-timeTracking-workItems.html#create-IssueWorkItem-method
+        """
+        return IssueWorkItem.model_validate(
+            self._post(
+                url=self._build_url(
+                    path=f"/issues/{issue_id}/timeTracking/workItems",
+                    fields=model_to_field_names(IssueWorkItem),
+                ),
+                data=issue_work_item,
+            ),
+        )
+
     def get_projects(self, offset: int = 0, count: int = -1) -> Sequence[Project]:
         """Get a list of all available projects in the system.
 
@@ -424,6 +457,28 @@ class Client:
                 url=self._build_url(
                     path="/admin/projects",
                     fields=model_to_field_names(Project),
+                    offset=offset,
+                    count=count,
+                ),
+            ),
+        )
+
+    def get_project_work_item_types(
+        self,
+        *,
+        project_id: str,
+        offset: int = 0,
+        count: int = -1,
+    ) -> Sequence[WorkItemType]:
+        """Get the list of all work item types that are used in the project.
+
+        https://www.jetbrains.com/help/youtrack/devportal/resource-api-admin-projects-projectID-timeTrackingSettings-workItemTypes.html#get_all-WorkItemType-method
+        """
+        return TypeAdapter(tuple[WorkItemType, ...]).validate_python(
+            self._get(
+                url=self._build_url(
+                    path=f"/admin/projects/{project_id}/timeTrackingSettings/workItemTypes",
+                    fields=model_to_field_names(WorkItemType),
                     offset=offset,
                     count=count,
                 ),
