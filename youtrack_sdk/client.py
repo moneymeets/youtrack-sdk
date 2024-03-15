@@ -158,8 +158,8 @@ class Client:
         model: Type[T] = Issue,
         query: Optional[str] = None,
         custom_fields: Sequence[str] = (),
-        offset: int = 0,
-        count: int = -1,
+        offset: Optional[int] = None,
+        count: Optional[int] = None,
     ) -> Sequence[T]:
         """Get all issues that match the specified query.
         If you don't provide the query parameter, the server returns all issues.
@@ -220,8 +220,8 @@ class Client:
         self,
         *,
         issue_id: str,
-        offset: int = 0,
-        count: int = -1,
+        offset: Optional[int] = None,
+        count: Optional[int] = None,
     ) -> Sequence[IssueCustomFieldType]:
         """Get the list of available custom fields of the issue.
 
@@ -275,8 +275,8 @@ class Client:
         self,
         *,
         issue_id: str,
-        offset: int = 0,
-        count: int = -1,
+        offset: Optional[int] = None,
+        count: Optional[int] = None,
     ) -> Sequence[IssueComment]:
         """Get all accessible comments of the specific issue.
 
@@ -360,8 +360,8 @@ class Client:
         self,
         *,
         issue_id: str,
-        offset: int = 0,
-        count: int = -1,
+        offset: Optional[int] = None,
+        count: Optional[int] = None,
     ) -> Sequence[IssueAttachment]:
         """Get a list of all attachments of the specific issue.
 
@@ -416,7 +416,13 @@ class Client:
             ),
         )
 
-    def get_issue_work_items(self, *, issue_id: str, offset: int = 0, count: int = -1) -> Sequence[IssueWorkItem]:
+    def get_issue_work_items(
+        self,
+        *,
+        issue_id: str,
+        offset: Optional[int] = None,
+        count: Optional[int] = None,
+    ) -> Sequence[IssueWorkItem]:
         """Get the list of all work items of the specific issue.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-timeTracking-workItems.html#get_all-IssueWorkItem-method
@@ -447,7 +453,7 @@ class Client:
             ),
         )
 
-    def get_projects(self, offset: int = 0, count: int = -1) -> Sequence[Project]:
+    def get_projects(self, offset: Optional[int] = None, count: Optional[int] = None) -> Sequence[Project]:
         """Get a list of all available projects in the system.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-admin-projects.html#get_all-Project-method
@@ -467,8 +473,8 @@ class Client:
         self,
         *,
         project_id: str,
-        offset: int = 0,
-        count: int = -1,
+        offset: Optional[int] = None,
+        count: Optional[int] = None,
     ) -> Sequence[WorkItemType]:
         """Get the list of all work item types that are used in the project.
 
@@ -485,7 +491,7 @@ class Client:
             ),
         )
 
-    def get_tags(self, offset: int = 0, count: int = -1) -> Sequence[Tag]:
+    def get_tags(self, offset: Optional[int] = None, count: Optional[int] = None) -> Sequence[Tag]:
         """Get all tags that are visible to the current user.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-tags.html#get_all-Tag-method
@@ -513,7 +519,7 @@ class Client:
             data=tag,
         )
 
-    def get_users(self, offset: int = 0, count: int = -1) -> Sequence[User]:
+    def get_users(self, offset: Optional[int] = None, count: Optional[int] = None) -> Sequence[User]:
         """Read the list of users in YouTrack.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-users.html#get_all-User-method
@@ -532,8 +538,8 @@ class Client:
     def get_issue_links(
         self,
         issue_id: str,
-        offset: int = 0,
-        count: int = -1,
+        offset: Optional[int] = None,
+        count: Optional[int] = None,
     ) -> Sequence[IssueLink]:
         """Read the list of links for the issue in YouTrack.
 
@@ -552,8 +558,8 @@ class Client:
 
     def get_issue_link_types(
         self,
-        offset: int = 0,
-        count: int = -1,
+        offset: Optional[int] = None,
+        count: Optional[int] = None,
     ) -> Sequence[IssueLinkType]:
         """Read the list of all available link types in in YouTrack.
 
@@ -609,7 +615,7 @@ class Client:
             ),
         )
 
-    def get_agiles(self, *, offset: int = 0, count: int = -1) -> Sequence[Agile]:
+    def get_agiles(self, *, offset: Optional[int] = None, count: Optional[int] = None) -> Sequence[Agile]:
         """Get the list of all available agile boards in the system.
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-agiles.html#get_all-Agile-method
@@ -643,8 +649,8 @@ class Client:
         self,
         *,
         agile_id: str,
-        offset: int = 0,
-        count: int = -1,
+        offset: Optional[int] = None,
+        count: Optional[int] = None,
     ) -> Sequence[Sprint]:
         """Get the list of all sprints of the agile board.
 
