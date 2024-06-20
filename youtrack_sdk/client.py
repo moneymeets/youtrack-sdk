@@ -1,5 +1,4 @@
 from http import HTTPMethod, HTTPStatus
-from json import JSONDecodeError
 from typing import IO, Optional, Sequence, Type
 from urllib.parse import urlencode
 
@@ -81,7 +80,7 @@ class Client:
         url: str,
         data: Optional[BaseModel] = None,
         files: Optional[dict[str, IO]] = None,
-    ) -> Optional[dict]:
+    ) -> Optional[bytes]:
         response = self._session.request(
             method=method,
             url=url,
@@ -108,14 +107,9 @@ class Client:
         if len(response.content) == 0:
             return
 
-        try:
-            return response.json()
-        except JSONDecodeError as e:
-            raise YouTrackException(
-                f"Failed to decode response from {method} {url}, status={response.status_code}",
-            ) from e
+        return response.content
 
-    def _get(self, *, url: str) -> Optional[dict]:
+    def _get(self, *, url: str) -> Optional[bytes]:
         return self._send_request(method=HTTPMethod.GET, url=url)
 
     def _post(
@@ -124,7 +118,7 @@ class Client:
         url: str,
         data: Optional[BaseModel] = None,
         files: Optional[dict[str, IO]] = None,
-    ) -> Optional[dict]:
+    ) -> Optional[bytes]:
         return self._send_request(
             method=HTTPMethod.POST,
             url=url,
@@ -132,7 +126,7 @@ class Client:
             files=files,
         )
 
-    def _delete(self, *, url: str) -> Optional[dict]:
+    def _delete(self, *, url: str) -> Optional[bytes]:
         return self._send_request(method=HTTPMethod.DELETE, url=url)
 
     def get_absolute_url(self, *, path: str) -> str:
@@ -143,7 +137,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues.html#get-Issue-method
         """
-        return Issue.model_validate(
+        return Issue.model_validate_json(
             self._get(
                 url=self._build_url(
                     path=f"/issues/{issue_id}",
@@ -166,7 +160,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues.html#get_all-Issue-method
         """
-        return TypeAdapter(tuple[model, ...]).validate_python(
+        return TypeAdapter(tuple[model, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path="/issues/",
@@ -184,7 +178,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues.html#create-Issue-method
         """
-        return Issue.model_validate(
+        return Issue.model_validate_json(
             self._post(
                 url=self._build_url(
                     path="/issues",
@@ -205,7 +199,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues.html#update-Issue-method
         """
-        return Issue.model_validate(
+        return Issue.model_validate_json(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}",
@@ -227,7 +221,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-customFields.html#get_all-IssueCustomField-method
         """
-        return TypeAdapter(tuple[IssueCustomFieldType, ...]).validate_python(
+        return TypeAdapter(tuple[IssueCustomFieldType, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/customFields",
@@ -249,7 +243,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-customFields.html#update-IssueCustomField-method
         """
-        return TypeAdapter(IssueCustomFieldType).validate_python(
+        return TypeAdapter(IssueCustomFieldType).validate_json(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/customFields/{field.id}",
@@ -282,7 +276,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-comments.html#get_all-IssueComment-method
         """
-        return TypeAdapter(tuple[IssueComment, ...]).validate_python(
+        return TypeAdapter(tuple[IssueComment, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/comments",
@@ -303,7 +297,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-comments.html#create-IssueComment-method
         """
-        return IssueComment.model_validate(
+        return IssueComment.model_validate_json(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/comments",
@@ -324,7 +318,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-issues-issueID-comments.html#update-IssueComment-method
         """
-        return IssueComment.model_validate(
+        return IssueComment.model_validate_json(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/comments/{comment.id}",
@@ -367,7 +361,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-attachments.html#get_all-IssueAttachment-method
         """
-        return TypeAdapter(tuple[IssueAttachment, ...]).validate_python(
+        return TypeAdapter(tuple[IssueAttachment, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/attachments",
@@ -389,7 +383,7 @@ class Client:
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-attachments.html#create-IssueAttachment-method
         https://www.jetbrains.com/help/youtrack/devportal/api-usecase-attach-files.html
         """
-        return TypeAdapter(tuple[IssueAttachment, ...]).validate_python(
+        return TypeAdapter(tuple[IssueAttachment, ...]).validate_json(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/attachments",
@@ -406,7 +400,7 @@ class Client:
         comment_id: str,
         files: dict[str, IO],
     ) -> Sequence[IssueAttachment]:
-        return TypeAdapter(tuple[IssueAttachment, ...]).validate_python(
+        return TypeAdapter(tuple[IssueAttachment, ...]).validate_json(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/comments/{comment_id}/attachments",
@@ -421,7 +415,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-timeTracking-workItems.html#get_all-IssueWorkItem-method
         """
-        return TypeAdapter(tuple[IssueWorkItem, ...]).validate_python(
+        return TypeAdapter(tuple[IssueWorkItem, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/timeTracking/workItems",
@@ -437,7 +431,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-timeTracking-workItems.html#create-IssueWorkItem-method
         """
-        return IssueWorkItem.model_validate(
+        return IssueWorkItem.model_validate_json(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/timeTracking/workItems",
@@ -452,7 +446,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-admin-projects.html#get_all-Project-method
         """
-        return TypeAdapter(tuple[Project, ...]).validate_python(
+        return TypeAdapter(tuple[Project, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path="/admin/projects",
@@ -474,7 +468,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-admin-projects-projectID-timeTrackingSettings-workItemTypes.html#get_all-WorkItemType-method
         """
-        return TypeAdapter(tuple[WorkItemType, ...]).validate_python(
+        return TypeAdapter(tuple[WorkItemType, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path=f"/admin/projects/{project_id}/timeTrackingSettings/workItemTypes",
@@ -490,7 +484,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-tags.html#get_all-Tag-method
         """
-        return TypeAdapter(tuple[Tag, ...]).validate_python(
+        return TypeAdapter(tuple[Tag, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path="/tags",
@@ -518,7 +512,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-users.html#get_all-User-method
         """
-        return TypeAdapter(tuple[User, ...]).validate_python(
+        return TypeAdapter(tuple[User, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path="/users",
@@ -539,7 +533,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-links.html#get_all-IssueLink-method
         """
-        return TypeAdapter(tuple[IssueLink, ...]).validate_python(
+        return TypeAdapter(tuple[IssueLink, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path=f"/issues/{issue_id}/links",
@@ -559,7 +553,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issueLinkTypes.html#get_all-IssueLinkType-method
         """
-        return TypeAdapter(tuple[IssueLinkType, ...]).validate_python(
+        return TypeAdapter(tuple[IssueLinkType, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path="/issueLinkTypes",
@@ -582,7 +576,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues-issueID-links-linkID-issues.html#create-Issue-method
         """
-        return TypeAdapter(Issue).validate_python(
+        return TypeAdapter(Issue).validate_json(
             self._post(
                 url=self._build_url(
                     path=f"/issues/{source_issue_id}/links/{link_type_id}{link_direction.value}/issues",
@@ -614,7 +608,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-agiles.html#get_all-Agile-method
         """
-        return TypeAdapter(tuple[Agile, ...]).validate_python(
+        return TypeAdapter(tuple[Agile, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path="/agiles",
@@ -630,7 +624,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-agiles.html#get-Agile-method
         """
-        return Agile.model_validate(
+        return Agile.model_validate_json(
             self._get(
                 url=self._build_url(
                     path=f"/agiles/{agile_id}",
@@ -650,7 +644,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/resource-api-agiles-agileID-sprints.html#get_all-Sprint-method
         """
-        return TypeAdapter(tuple[Sprint, ...]).validate_python(
+        return TypeAdapter(tuple[Sprint, ...]).validate_json(
             self._get(
                 url=self._build_url(
                     path=f"/agiles/{agile_id}/sprints",
@@ -666,7 +660,7 @@ class Client:
 
         https://www.jetbrains.com/help/youtrack/devportal/operations-api-agiles-agileID-sprints.html#get-Sprint-method
         """
-        return Sprint.model_validate(
+        return Sprint.model_validate_json(
             self._get(
                 url=self._build_url(
                     path=f"/agiles/{agile_id}/sprints/{sprint_id}",
