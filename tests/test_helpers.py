@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Literal, Optional, Sequence, Union
+from typing import Annotated, Literal, Optional, Sequence, Union
 from unittest import TestCase
 
 import requests_mock
@@ -57,6 +57,10 @@ class TestModelToFieldNames(TestCase):
         self.assertEqual(
             "$type,id,shortName,value($type,id,shortName)",
             model_to_field_names(Union[SimpleModel | NestedModel]),
+        )
+        self.assertEqual(
+            "$type,id,shortName,value($type,id,shortName)",
+            model_to_field_names(Annotated[SimpleModel | NestedModel, Field(discriminator="type")]),
         )
 
 
