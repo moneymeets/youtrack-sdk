@@ -1,5 +1,4 @@
 from http import HTTPMethod, HTTPStatus
-from json import JSONDecodeError
 from typing import IO, Optional, Sequence, Type
 from urllib.parse import urlencode
 
@@ -108,12 +107,7 @@ class Client:
         if len(response.content) == 0:
             return
 
-        try:
-            return response.content
-        except JSONDecodeError as e:
-            raise YouTrackException(
-                f"Failed to decode response from {method} {url}, status={response.status_code}",
-            ) from e
+        return response.content
 
     def _get(self, *, url: str) -> Optional[bytes]:
         return self._send_request(method=HTTPMethod.GET, url=url)
