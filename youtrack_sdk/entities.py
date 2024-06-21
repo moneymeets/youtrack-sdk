@@ -1,4 +1,4 @@
-from typing import Literal, Optional, Sequence
+from typing import Annotated, Literal, Optional, Sequence
 
 from pydantic import AwareDatetime, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from pydantic import BaseModel as PydanticBaseModel
@@ -239,7 +239,7 @@ class StateIssueCustomField(IssueCustomField):
     value: Optional[StateBundleElement] = None
 
 
-IssueCustomFieldType = (
+IssueCustomFieldType = Annotated[
     SingleEnumIssueCustomField
     | MultiEnumIssueCustomField
     | SingleBuildIssueCustomField
@@ -256,8 +256,9 @@ IssueCustomFieldType = (
     | SimpleIssueCustomField
     | DateIssueCustomField
     | PeriodIssueCustomField
-    | TextIssueCustomField
-)
+    | TextIssueCustomField,
+    Field(discriminator="type"),
+]
 
 
 class Project(BaseModel):

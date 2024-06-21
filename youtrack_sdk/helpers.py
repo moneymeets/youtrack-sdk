@@ -2,7 +2,7 @@ import json
 from copy import deepcopy
 from datetime import UTC, date, datetime, time
 from itertools import starmap
-from typing import Any, Callable, Collection, Optional, Type, Union, get_args
+from typing import Annotated, Any, Callable, Collection, Optional, Type, Union, get_args, get_origin
 
 from pydantic import BaseModel
 
@@ -73,6 +73,10 @@ def model_to_field_names(model: Type[BaseModel] | Union[Type[BaseModel]]) -> Opt
             f"{field_name}({field_value})" if (field_value := fields_to_csv(value)) else field_name
             for field_name, value in fields.items()
         )
+
+    # Extract origin type from annotated type
+    if get_origin(model) is Annotated:
+        model = get_args(model)[0]
 
     # `get_args` returns a sequence of the types included in the union type
     # or an empty sequence if the `model` is a base type
