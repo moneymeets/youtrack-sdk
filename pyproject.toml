@@ -1,13 +1,11 @@
-[tool.poetry]
+[project]
 name = "youtrack-sdk"
-version = "1.1+SNAPSHOT"
 description = "YouTrack SDK"
-authors = ["moneymeets <service@moneymeets.com>"]
-readme = "README.md"
-repository = "https://github.com/moneymeets/youtrack-sdk"
-packages = [
-    { include = "youtrack_sdk" },
+dynamic = [ "version" ]
+authors = [
+    { name = "moneymeets", email = "service@moneymeets.com" },
 ]
+readme = "README.md"
 include = ["VERSION.txt"]
 keywords = ["youtrack", "sdk"]
 license = "MIT"
@@ -19,13 +17,20 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "License :: OSI Approved :: MIT License",
 ]
+requires-python = "~3.12"
+
+[tool.poetry]
+repository = "https://github.com/moneymeets/youtrack-sdk"
+version = "1.1+SNAPSHOT"
+packages = [
+    { include = "youtrack_sdk" },
+]
 
 [tool.poetry.dependencies]
-python = "~3.12"
 requests = "*"
 pydantic = "*"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "*"
 pytest-cov = "*"
 
