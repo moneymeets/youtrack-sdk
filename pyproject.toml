@@ -29,6 +29,8 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
+python = "~=3.14.0"
+
 requests = "*"
 pydantic = "*"
 
