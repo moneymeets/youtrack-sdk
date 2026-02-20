@@ -2,7 +2,7 @@
 exclude = ["manage.py"]
 force-exclude = true
 line-length = 120
-target-version = "py312"
+target-version = "py314"
 
 [lint]
 # Full list of available rules can be found on https://docs.astral.sh/ruff/rules/
